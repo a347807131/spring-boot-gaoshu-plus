@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="gaoshu-base" />
+        <module name="gaoshu-core" />
+        <module name="gaoshu-web" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="9">
+      <module name="gaoshu-base" target="1.8" />
+      <module name="gaoshu-core" target="1.8" />
+      <module name="gaoshu-web" target="1.8" />
+      <module name="spring-boot-gaoshu-plus" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
