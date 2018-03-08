@@ -1,0 +1,58 @@
+#数据库设置
+spring:
+#JavaMailSender 邮件发送的配置
+    mail:
+        host: smtp.qq.com
+        username: 947124233@qq.com
+        password: h5767356q
+        properties:
+            mail.smtp:
+                auth: true
+                starttls.enable: true
+                starttls.required: true
+    #JPA Configuration:
+    jpa:
+        database: MYSQL
+        show-sql: true
+        hibernate.ddl-auto: update
+        properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+        
+    #数据源设置
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        url: jdbc:mysql://localhost:3306/db_gaoshu_plus?allowMultiQueries=true&userSSL=false&useUnicode=true&characterEncoding=UTF-8
+        driver-class-name: com.mysql.jdbc.Driver
+        username: root
+        password: admin
+        druid:
+            #dataSource Pool configuration
+            initial-size: 10
+            max-active: 100
+            min-idle: 10
+            max-wait: 60000
+            pool-prepared-statements: true
+            max-pool-prepared-statement-per-connection-size: 20
+            time-between-eviction-runs-millis: 60000
+            min-evictable-idle-time-millis: 300000
+            validation-query: SELECT 1 FROM DUAL
+            test-while-idle: true
+            test-on-borrow: false
+            test-on-return: false
+            stat-view-servlet:
+               enabled: true
+               url-pattern: /druid/*
+               login-username: root
+               login-password: admin
+            filter:
+               stat:
+                   log-slow-sql: true
+                   slow-sql-millis: 1000
+                   merge-sql: true
+               wall:
+                   config:
+                       multi-statement-allow: true
+
+#logging
+logging:
+    level: info
+    file: spring.log
