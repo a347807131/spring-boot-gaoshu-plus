@@ -41,4 +41,8 @@ public class PostAttribute implements Serializable{
 	//排序 按转出在哪创建时间升序排列
 	@OrderBy("created asc")
 	private List<Comment> comments;
+
+	@OneToMany
+	@JoinColumn(name = "pid")
+	private List<Attach> attaches;
 }

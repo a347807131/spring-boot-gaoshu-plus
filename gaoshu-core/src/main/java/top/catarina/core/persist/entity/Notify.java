@@ -1,6 +1,8 @@
 package top.catarina.core.persist.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,7 +13,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "tb_notify")
-public class NotifyEntity {
+public class Notify {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -29,7 +31,11 @@ public class NotifyEntity {
 	@Column(name = "post_id")
 	private long postId;
 
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(value = TemporalType.TIMESTAMP)
+	//设置不可readonly
+	@Column(insertable = false, updatable = false)
+	//设置更改时自动更新为当前时间
+	@Generated(GenerationTime.INSERT)
 	private Date created;
 
 	/**状态*/

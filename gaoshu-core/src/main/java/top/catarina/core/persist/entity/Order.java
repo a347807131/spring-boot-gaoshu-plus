@@ -21,8 +21,8 @@ import java.util.Date;
  */
 @Data
 @Entity
-@Table(name = "orders")
-public class OrderEntity implements Serializable {
+@Table(name = "tb_orders")
+public class Order implements Serializable {
 	/**
 	 * 根据微信文档设置的属性名字
 	 */
@@ -34,7 +34,7 @@ public class OrderEntity implements Serializable {
 	/**
 	 * 所属用户openId
 	 */
-	@Column(name = "openid", length = 32, unique = true)
+	@Column(name = "openid", length = 32, unique = true,nullable = false)
 	private String openId;
 	private int status;
 
@@ -47,6 +47,7 @@ public class OrderEntity implements Serializable {
 	/**
 	 * 总金额
 	 */
+	@Column(nullable = false)
 	private int totalFee;
 
 	/**
@@ -61,6 +62,6 @@ public class OrderEntity implements Serializable {
 	@Temporal(value = TemporalType.TIMESTAMP)
 	private Date timeExpire;
 
-	@Column(name = "spbill_create_ip")
+	@Column(name = "spbill_create_ip",nullable = false)
 	private String spbillCreateIp;
 }

@@ -30,11 +30,6 @@ public class Attach implements Serializable{
 	 */
 	@Column(name = "m_id")
 	private String mId;
-	/**
-	 * 所属post的id
-	 */
-	@Column(name = "to_id")
-	private long toId;
 
 	/**
 	 * 原图链接

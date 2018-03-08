@@ -6,7 +6,7 @@
 |   http://www.catarina.top
 +---------------------------------------------------------------------------
 */
-package top.catarina.core.persist.service.impl;
+package top.catarina.core.persist.service;
 
 import top.catarina.core.persist.entity.Comment;
 

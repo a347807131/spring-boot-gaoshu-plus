@@ -8,12 +8,18 @@
 */
 package top.catarina.core.persist.entity;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author Civin
@@ -58,6 +64,7 @@ public class Post implements Serializable {
 	/**
 	 * 标签，多个都好隔开
 	 */
+	@Column(nullable = false,length = 16)
 	private String tag;
 
 	/**
@@ -66,9 +73,15 @@ public class Post implements Serializable {
 	private int views;
 
 	@Temporal(value = TemporalType.TIMESTAMP)
+	@Column(updatable = false,insertable = false)
+	//设置插入数据时自动更新为当前时间
+	@CreationTimestamp
 	private Date created;
 
 	@Temporal(value = TemporalType.TIMESTAMP)
+	//设置更改或插入数据时自动更新为当前时间
+	@Column(insertable = false)
+	@UpdateTimestamp
 	private Date lastUpdate;
 	/**
 	 * 作者

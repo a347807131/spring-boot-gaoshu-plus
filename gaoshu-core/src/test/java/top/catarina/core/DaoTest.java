@@ -13,12 +13,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import top.catarina.ApplicationTest;
-import top.catarina.core.persist.dao.AttachDao;
-import top.catarina.core.persist.dao.CommentDao;
-import top.catarina.core.persist.dao.UserDao;
-import top.catarina.core.persist.entity.Attach;
-import top.catarina.core.persist.entity.Comment;
-import top.catarina.core.persist.entity.User;
+import top.catarina.core.persist.dao.*;
+import top.catarina.core.persist.entity.*;
 
 import javax.transaction.Transactional;
 import java.util.LinkedList;
@@ -29,6 +25,7 @@ import java.util.LinkedList;
  * @since 2018-03-07 22:42
  */
 @Slf4j
+@Transactional
 public class DaoTest extends ApplicationTest {
 	@Autowired
 	UserDao userDao;
@@ -36,6 +33,11 @@ public class DaoTest extends ApplicationTest {
 	CommentDao commentDao;
 	@Autowired
 	AttachDao attachDao;
+	@Autowired
+	PostDao postDao;
+	@Autowired
+	NotifyDao notifyDao;
+
 	@Override
 	public void test() {
 		User user = new User();
@@ -43,9 +45,9 @@ public class DaoTest extends ApplicationTest {
 		userDao.save(user);
 		System.out.println(user.getId());
 	}
+
 	@Test
-	@Transactional
-	public void testCascate(){
+	public void testCascades() {
 		//添加
 		Comment comment = new Comment();
 		comment.setContent("测试");
@@ -63,5 +65,42 @@ public class DaoTest extends ApplicationTest {
 		//删除
 		commentDao.delete(comment);
 		Assert.assertTrue(!attachDao.exists(attachId));
+		Assert.assertTrue(!commentDao.exists(commentId));
+	}
+
+	@Test
+	public void testPostDao() throws InterruptedException {
+		Post post = new Post();
+		post.setTitle("测试");
+		postDao.save(post);
+		log.info("第一次储存后:"
+				+ "创建时间" + post.getCreated() + "--" + "最近更新时间" + post.getLastUpdate());
+		Assert.assertNotNull(post.getCreated() == post.getLastUpdate());
+		Thread.sleep(3000);
+		post.setTag("高数");
+
+		post = postDao.findOne(post.getId());
+		log.info("更新后:"
+				+ "创建时间" + post.getCreated() + "--" + "最近更新时间" + post.getLastUpdate());
+		Assert.assertNotNull(post.getCreated() != post.getLastUpdate());
+	}
+
+	@Test
+	public void testPostDao2() throws InterruptedException {
+		Post post = new Post();
+		post.setViews(1);
+		Post post1 = postDao.save(post);
+		post1.setViews(2);
+
+		Assert.assertTrue(post1.getViews() == postDao.getOne(post.getId()).getViews());
+	}
+
+	@Test
+	public void testNotifyDao() {
+		Notify notify = new Notify();
+		notify.setOwnId(1);
+		notifyDao.save(notify);
+		int i = notifyDao.countByOwnId(1);
+		System.out.println(i);
 	}
 }

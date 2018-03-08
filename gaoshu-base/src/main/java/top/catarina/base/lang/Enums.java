@@ -154,7 +154,7 @@ public interface Enums {
 	enum StatusNotify{
 
 		UNREAD(0,"未读"),
-		READED(0,"已读");
+		READED(1,"已读");
 
 		private String text;
 		private int index;

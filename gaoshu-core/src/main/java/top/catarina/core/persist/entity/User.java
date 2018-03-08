@@ -11,6 +11,8 @@ package top.catarina.core.persist.entity;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -60,16 +62,22 @@ public class User implements Serializable{
 
 	/**注册时间*/
 	@Temporal(value = TemporalType.TIMESTAMP)
+	@Column(updatable = false,insertable = false)
+	//设置插入数据时自动更新为当前时间
+	@CreationTimestamp
 	private Date created;
 
-	@Column(name = "last_login")
+	@Column(name = "last_login",insertable = false)
 	@Temporal(value = TemporalType.TIMESTAMP)
+	//设置更改或插入数据时自动更新为当前时间
+	@UpdateTimestamp
 	private Date lasgLogin;
 
 	/**用户状态*/
 	private int status;
 
 	@ManyToOne
+	@JoinColumn(name = "cid")
 	private College college;
 
 

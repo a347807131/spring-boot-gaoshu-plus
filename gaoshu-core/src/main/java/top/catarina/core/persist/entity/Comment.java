@@ -9,6 +9,8 @@
 package top.catarina.core.persist.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -29,10 +31,6 @@ public class Comment implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	/**评论的排序数*/
-	private int sort;
-
-	@ManyToOne(cascade = CascadeType.DETACH)
 	@JoinColumn(name = "uid")
 	private User author;
 
@@ -44,6 +42,11 @@ public class Comment implements Serializable{
 	@JoinColumn(name="cid")
 	private List<Attach> attachs;
 
+	@Temporal(value = TemporalType.TIMESTAMP)
+	//设置不可readonly
+	@Column(insertable = false, updatable = false)
+	//设置更改时自动更新为当前时间
+	@Generated(GenerationTime.INSERT)
 	private Date created;
 
 	private int status;
