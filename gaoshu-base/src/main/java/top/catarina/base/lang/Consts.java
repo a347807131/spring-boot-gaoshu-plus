@@ -20,9 +20,12 @@ public interface Consts {
 	 * 热度步数
 	 */
 	int IDENTITY_STEP = 1;
-
 	/**
 	 * 默认头像
 	 */
 	String DEFAULT_AVATAR = "/static/image/avatar/default.png";
+	/**
+	 * 存放在session中用户的索引标识
+	 */
+	String USER_ID = "user_id";
 }

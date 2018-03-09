@@ -8,6 +8,8 @@
 */
 package top.catarina.core.persist.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import top.catarina.core.persist.entity.Comment;
 
 import java.util.List;
@@ -20,6 +22,11 @@ import java.util.Set;
  * @since 2018-03-08 14:43
  */
 public interface CommentService {
+	/**
+	 * 用户查询自己的评论
+	 */
+	Page<Comment> paging(long ownId, Pageable pageable);
+
 	/**
 	 * 通过ids集合查询
 	 *
@@ -34,7 +41,7 @@ public interface CommentService {
 	 * @param comment 实体
 	 * @return 主键值
 	 */
-	long post(Comment comment);
+	long post(Comment comment,long pid);
 
 	/**
 	 * 批量删除

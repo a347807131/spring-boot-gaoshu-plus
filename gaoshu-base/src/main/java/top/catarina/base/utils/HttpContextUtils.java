@@ -14,19 +14,17 @@
  * the License.
  */
 
-package top.catarina.base.annotation;
+package top.catarina.base.utils;
 
-import java.lang.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-/**
- * 系统日志注解
- *
- * @author Mark sunlightcs@gmail.com
- * @since 1.3.0 2017-03-08
- */
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface SysLog {
-	String value() default "";
+import javax.servlet.http.HttpServletRequest;
+
+
+public class HttpContextUtils {
+
+	public static HttpServletRequest getHttpServletRequest() {
+		return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+	}
 }

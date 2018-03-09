@@ -7,7 +7,7 @@ server:
         max-threads: 1000
         min-spare-threads: 30
     port: 80
-    context-path: /web
+    #context-path: /gaoshu
 
 spring:
     # 环境 dev|test|prod

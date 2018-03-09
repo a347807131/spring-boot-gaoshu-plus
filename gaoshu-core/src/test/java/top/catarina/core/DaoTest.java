@@ -69,6 +69,26 @@ public class DaoTest extends ApplicationTest {
 	}
 
 	@Test
+	public void testCascades2() {
+		//添加
+		Comment comment = new Comment();
+		comment.setContent("测试");
+		LinkedList<Attach> list = new LinkedList<>();
+		Attach attach = new Attach();
+		attach.setHeight(10);
+		list.add(attach);
+		comment.setAttachs(list);
+		commentDao.save(comment);
+
+		Attach attach1 = new Attach();
+		attach1.setHeight(11);
+		comment.getAttachs().add(attach1);
+		Assert.assertTrue(attachDao.count() == 2);
+		Assert.assertTrue(attach1.getId() != 0);
+
+	}
+
+	@Test
 	public void testPostDao() throws InterruptedException {
 		Post post = new Post();
 		post.setTitle("测试");
@@ -89,9 +109,11 @@ public class DaoTest extends ApplicationTest {
 	public void testPostDao2() throws InterruptedException {
 		Post post = new Post();
 		post.setViews(1);
+		post.setTag("测试");
 		Post post1 = postDao.save(post);
 		post1.setViews(2);
 
+		Assert.assertTrue(!(post.getId()==0));
 		Assert.assertTrue(post1.getViews() == postDao.getOne(post.getId()).getViews());
 	}
 

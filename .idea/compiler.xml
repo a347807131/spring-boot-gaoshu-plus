@@ -10,12 +10,14 @@
         <module name="gaoshu-base" />
         <module name="gaoshu-core" />
         <module name="gaoshu-web" />
+        <module name="gaoshu-wx" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="9">
       <module name="gaoshu-base" target="1.8" />
       <module name="gaoshu-core" target="1.8" />
       <module name="gaoshu-web" target="1.8" />
+      <module name="gaoshu-wx" target="1.8" />
       <module name="spring-boot-gaoshu-plus" target="1.8" />
     </bytecodeTargetLevel>
   </component>

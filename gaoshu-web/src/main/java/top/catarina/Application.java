@@ -10,12 +10,14 @@ package top.catarina;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @author Civin
  * 邮箱：   Civin@bupt.edu.cn
  * @since 2018-03-07 19:25
  */
+@EnableTransactionManagement
 @SpringBootApplication(scanBasePackages = "top.catarina")
 public class Application {
 

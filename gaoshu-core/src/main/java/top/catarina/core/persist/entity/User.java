@@ -13,6 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -33,7 +34,7 @@ public class User implements Serializable{
 	/**
 	 * 相对于公众号的唯一用户标识
 	 */
-	@Column(unique = true,length = 20)
+	@Column(unique = true,length = 32)
 	private String openId;
 
 	/**用戶名*/
@@ -41,10 +42,12 @@ public class User implements Serializable{
 	private String username;
 
 	/**昵稱*/
+	@NotBlank
 	@Column(name = "nickname",length = 64)
 	private String nickname;
 
 	/**头像*/
+	@NotBlank
 	private String avatar;
 
 	/**性别*/

@@ -2,12 +2,18 @@
 app:
     #文件储存目录
     store.root:
-    domain: catarina.ngrok.xiaomiqiu.cn
-    wechat:
-        pay:
-            mchId: ..
-            mchKey: ..
-            keyPath: ..
+    domain: top.catarina.ngrok.xiaomiqiu.cn
+#微信开发相关配置
+wechat:
+    mp:
+        appId: wx667ce3fb69526d7e
+        secret: 09ef940002f7125cefc37aee212c3271
+        token: token
+        #aesKey:
+    pay:
+        mchId: ..
+        mchKey: ..
+        keyPath: ..
 
 #数据库设置
 spring:

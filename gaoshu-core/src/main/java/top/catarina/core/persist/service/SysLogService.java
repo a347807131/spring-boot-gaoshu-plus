@@ -6,14 +6,18 @@
 |   http://www.catarina.top
 +---------------------------------------------------------------------------
 */
-package top.catarina.core.persist.dao;
+package top.catarina.core.persist.service;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
-/**
+import top.catarina.core.persist.entity.SysLog; /**
  * @author Civin
  * 邮箱：   Civin@bupt.edu.cn
- * @since 2018-03-08 19:10
+ * @since 2018-03-08 19:12
  */
-public interface SysLog extends JpaRepository<SysLog,Long>{
+public interface SysLogService {
+	/**
+	 *
+	 * @param log 实体
+	 * @return 主键
+	 */
+	long insert(SysLog log);
 }

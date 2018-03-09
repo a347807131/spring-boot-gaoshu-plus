@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/gaoshu-base/gaoshu-base.iml" filepath="$PROJECT_DIR$/gaoshu-base/gaoshu-base.iml" />
       <module fileurl="file://$PROJECT_DIR$/gaoshu-core/gaoshu-core.iml" filepath="$PROJECT_DIR$/gaoshu-core/gaoshu-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/gaoshu-web/gaoshu-web.iml" filepath="$PROJECT_DIR$/gaoshu-web/gaoshu-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gaoshu-wx/gaoshu-wx.iml" filepath="$PROJECT_DIR$/gaoshu-wx/gaoshu-wx.iml" />
       <module fileurl="file://$PROJECT_DIR$/spring-boot-gaoshu-plus.iml" filepath="$PROJECT_DIR$/spring-boot-gaoshu-plus.iml" />
     </modules>
   </component>

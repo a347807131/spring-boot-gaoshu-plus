@@ -31,9 +31,9 @@ public class PostAttribute implements Serializable{
 	@GenericGenerator(name = "pkGenerator", strategy = "foreign", parameters = @Parameter(name = "property", value = "post"))
 	private long id;
 
-	@OneToOne(mappedBy = "attribute")
+	/*@OneToOne(mappedBy = "attribute")
 	@JoinColumn(name = "id")
-	private Post post;
+	private Post post;*/
 
 	//cascade没有写，即是默认值，就是不级联的意思。
 	@OneToMany

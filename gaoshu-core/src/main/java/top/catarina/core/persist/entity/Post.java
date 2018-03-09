@@ -8,6 +8,7 @@
 */
 package top.catarina.core.persist.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -91,6 +92,7 @@ public class Post implements Serializable {
 	private User author;
 
 
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	@PrimaryKeyJoinColumn //配置共享主键，否则会额外生成外键关联列
 	private PostAttribute attribute;

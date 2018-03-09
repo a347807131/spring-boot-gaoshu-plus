@@ -14,10 +14,26 @@
  * the License.
  */
 
-package top.catarina.base.annotation.aspect;
+package top.catarina.core.annotation.aspect;
 
+import com.google.gson.Gson;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import top.catarina.base.lang.Consts;
+import top.catarina.base.utils.HttpContextUtils;
+import top.catarina.base.utils.IPUtils;
+import top.catarina.core.annotation.Log;
+import top.catarina.core.persist.entity.SysLog;
+import top.catarina.core.persist.service.SysLogService;
+
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
+import java.util.Date;
 
 /**
  * 系统日志，切面处理类
@@ -27,10 +43,10 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class SysLogAspect {
-	/*@Autowired
+	@Autowired
 	private SysLogService sysLogService;
 	
-	@Pointcut("@annotation(SysLog)")
+	@Pointcut("@annotation(top.catarina.core.annotation.Log)")
 	public void logPointCut() { 
 		
 	}
@@ -54,10 +70,10 @@ public class SysLogAspect {
 		Method method = signature.getMethod();
 
 		SysLog sysLog = new SysLog();
-		SysLog syslog = method.getAnnotation(SysLog.class);
-		if(syslog != null){
+		Log log = method.getAnnotation(Log.class);
+		if(log != null){
 			//注解上的描述
-			sysLog.setOperation(syslog.value());
+			sysLog.setOperation(log.value());
 		}
 
 		//请求的方法名
@@ -75,17 +91,16 @@ public class SysLogAspect {
 		}
 
 		//获取request
-		HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
+		HttpServletRequest request =HttpContextUtils.getHttpServletRequest();
 		//设置IP地址
 		sysLog.setIp(IPUtils.getIpAddr(request));
 
 		//用户名
-		String username = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getUsername();
-		sysLog.setUsername(username);
+		long uid = (long) request.getAttribute(Consts.USER_ID);
 
 		sysLog.setTime(time);
 		sysLog.setCreateDate(new Date());
 		//保存系统日志
 		sysLogService.insert(sysLog);
-	}*/
+	}
 }

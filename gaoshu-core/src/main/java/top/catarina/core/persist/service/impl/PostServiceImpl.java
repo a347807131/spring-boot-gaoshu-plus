@@ -8,18 +8,23 @@
 */
 package top.catarina.core.persist.service.impl;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import top.catarina.base.lang.Consts;
 import top.catarina.base.lang.Enums;
+import top.catarina.core.data.PostVo;
 import top.catarina.core.persist.dao.PostAttributeDao;
 import top.catarina.core.persist.dao.PostDao;
 import top.catarina.core.persist.entity.Post;
-import top.catarina.core.persist.entity.PostAttribute;
 import top.catarina.core.persist.service.PostService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Civin
@@ -37,13 +42,13 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public long post(Post post) {
 		Assert.notNull(post);
-
-		return 0;
+		postDao.save(post);
+		return post.getId();
 	}
 
 	@Override
-	public PostAttribute get(long id) {
-		PostAttribute one = attributeDao.getOne(id);
+	public Post get(long id) {
+		Post one = postDao.getOne(id);
 		Assert.notNull(one);
 		return one;
 	}
@@ -102,18 +107,21 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public Page<Post> paging(Pageable pageable) {
-		return postDao.findAll(pageable);
+	public Page<PostVo> paging(Pageable pageable) {
+		Page<Post> page = postDao.findAll(pageable);
+		return toVoPage(page,pageable);
 	}
 
 	@Override
-	public Page<Post> pagingByAuthorId(Pageable pageable, long userId, int privacy) {
-		return postDao.findByAuthorIdAndPrivacy(userId,privacy,pageable);
+	public Page<PostVo> pagingByAuthorId(Pageable pageable, long userId, int privacy) {
+		Page<Post> postPage = postDao.findByAuthorIdAndPrivacy(userId, privacy, pageable);
+		return toVoPage(postPage,pageable);
 	}
 
 	@Override
-	public Page<Post> pagingByAuthorId(Pageable pageable, long userId) {
-		return postDao.findByAuthorIdAndPrivacy(userId, Enums.Privacy.OPEN.getIndex(),pageable);
+	public Page<PostVo> pagingByAuthorId(Pageable pageable, long userId) {
+		Page<Post> posts = postDao.findByAuthorIdAndPrivacy(userId, Enums.Privacy.OPEN.getIndex(), pageable);
+		return toVoPage(posts,pageable);
 	}
 
 	@Override
@@ -122,7 +130,23 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public Page<Post> searchByTag(String tag, Pageable pageable) {
-		return postDao.findByTag(tag,pageable);
+	public Page<PostVo> searchByTag(String tag, Pageable pageable) {
+		Page<Post> posts = postDao.findByTag(tag, pageable);
+		return toVoPage(posts,pageable);
+	}
+	/**
+	 * 将原始的包装有entity的page复制为包装为Post的page
+	 * @return
+	 */
+	private Page<PostVo> toVoPage(Page<Post> page,Pageable pageable){
+		List<Post> pos = page.getContent();
+		ArrayList<PostVo> vos = new ArrayList<>();
+		for (Post po:pos) {
+			PostVo vo = new PostVo();
+			//复制除了attribute以外的属性
+			BeanUtils.copyProperties(po,vo,"attribute");
+		}
+		Page<PostVo> ret = new PageImpl<PostVo>(vos, pageable,page.getSize());
+		return ret;
 	}
 }
