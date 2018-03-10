@@ -34,6 +34,8 @@ public interface PostService {
 	 */
 	Post get(long id);
 
+	long add(Post post);
+
 	/**
 	 * 更新文章方法 应该为只可更新部分属性 后续完善
 	 *

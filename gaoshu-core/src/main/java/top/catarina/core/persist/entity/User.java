@@ -31,31 +31,50 @@ public class User implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+
+	//*************微信oauth认证后的返回的字段*******************
 	/**
 	 * 相对于公众号的唯一用户标识
 	 */
 	@Column(unique = true,length = 32)
 	private String openId;
-
-	/**用戶名*/
-	@Column(unique = true,length = 64)
-	private String username;
+	/**
+	 * 是否关注
+	 */
+	@Column( columnDefinition = "tinyint(0) default 1")
+	private boolean subscribe;
 
 	/**昵稱*/
-	@NotBlank
 	@Column(name = "nickname",length = 64)
 	private String nickname;
 
 	/**头像*/
-	@NotBlank
-	private String avatar;
+	private String headImgUrl;
 
 	/**性别*/
-	private int gender;
+	private String sex;
+	/**
+	 * 城市
+	 */
+	private String city;
+	/**
+	 * 省份
+	 */
+	private String province;
+	/**
+	 * 国家
+	 */
+	private String country;
+	/**
+	 * 关注公众号的时间 毫秒计数
+	 */
+	private Long subscribeTime;
+
+	//***************以下为项目中的字段****************
 
 	/**手机号*/
-	@Column(name = "mobile",length = 11)
-	private String mobile;
+	/*@Column(length = 11)
+	private String mobile;*/
 
 	/**提问数*/
 	private int posts;

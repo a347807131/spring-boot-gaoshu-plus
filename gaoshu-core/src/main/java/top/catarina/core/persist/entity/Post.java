@@ -12,13 +12,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -67,6 +67,11 @@ public class Post implements Serializable {
 	 */
 	@Column(nullable = false,length = 16)
 	private String tag;
+	/**
+	 * 内容
+	 */
+	@Type(type = "text")
+	private String content;
 
 	/**
 	 * 浏览数

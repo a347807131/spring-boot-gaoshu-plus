@@ -1,6 +1,7 @@
 package top.catarina.web.controller;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
@@ -10,9 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import top.catarina.base.lang.Consts;
 import top.catarina.base.utils.R;
 import top.catarina.core.annotation.CurrentUser;
+import top.catarina.core.data.CommentForm;
 import top.catarina.core.persist.entity.*;
 import top.catarina.core.persist.service.CommentService;
 import top.catarina.core.persist.service.PostService;
+import top.catarina.core.validator.ValidatorUtils;
 
 import java.util.List;
 
@@ -40,40 +43,34 @@ public class CommentController extends BaseController {
 	public Page<Comment> view(Integer pn, @PathVariable long toId) {
 		Sort sort = new Sort(Sort.Direction.ASC, "sort");
 		Pageable pageable = wrapPage(pn, sort);
-		Page<Comment> list = commentService.paging( toId,pageable);
+		Page<Comment> list = commentService.paging(toId, pageable);
 		return list;
 	}
 
 	/**
 	 * 提交评论
-	 * @param comment 实体
-	 * @param pid 所要提交给的推送
-	 * @param albums 素材id数组
-	 * @param user 当前操作用户
+	 *
+	 * @param user    当前操作用户
 	 */
 	@PostMapping
-	public R post(@RequestBody Comment comment,
-	              @RequestParam(name = "pid") long pid,
-	              @RequestParam(name = "mids") String[] albums,
-	              @CurrentUser User user){
-		if (comment.getContent()!=null || albums!=null) {
+	public R post(@RequestBody CommentForm form,
+	              @CurrentUser User user) {
+		ValidatorUtils.validateEntity(form);
+		form.setAuthor(user);
+		Comment comment = new Comment();
+		BeanUtils.copyProperties(form, comment);
+		commentService.post(comment, form.getPid());
+		List<Attach> attaches = handleAblums(form.getMids());
+		comment.setAttachs(attaches);
 
-			comment.setAuthor(user);
-			if(albums!=null){
-				List<Attach> attachList = handleAblums(albums);
-				comment.setAttachs(attachList);
-			}
-			commentService.post(comment,pid);
-			//发送通知
-			if(postService.get(pid).getAuthor().getId()!=user.getId())
-				//sendNotify();
-			return R.ok();
-		}
-		return R.error("发布评论失败,没有内容。");
+		//发送通知
+		//if (postService.get(form.getPid()).getAuthor().getId() != user.getId())
+		//sendNotify();
+		return R.ok();
 	}
 
 	@DeleteMapping
-	public R delete(@RequestParam(name = "cid") Long id,@CurrentUser User user) {
+	public R delete(@RequestParam(name = "cid") Long id, @CurrentUser User user) {
 		if (id != null) {
 			commentService.delete(id, user.getId());
 			return R.ok();

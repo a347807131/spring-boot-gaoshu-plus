@@ -1,5 +1,6 @@
 package top.catarina.web.controller;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -9,11 +10,15 @@ import top.catarina.base.lang.Enums;
 import top.catarina.base.upload.FileRepo;
 import top.catarina.base.utils.R;
 import top.catarina.core.annotation.CurrentUser;
+import top.catarina.core.data.PostForm;
 import top.catarina.core.data.PostVo;
+import top.catarina.core.persist.entity.Attach;
 import top.catarina.core.persist.entity.Post;
 import top.catarina.core.persist.entity.User;
 import top.catarina.core.persist.service.PostService;
 import top.catarina.core.validator.ValidatorUtils;
+
+import java.util.List;
 
 /**
  * @author Civin
@@ -24,7 +29,7 @@ import top.catarina.core.validator.ValidatorUtils;
 public class PostController extends BaseController {
 
 	@Autowired
-	private PostService postService;
+	PostService postService;
 	@Autowired
 	FileRepo fileRepo;
 
@@ -61,7 +66,7 @@ public class PostController extends BaseController {
 	 * @param id post的id
 	 * @return post的数据
 	 */
-	@GetMapping("/detall")
+	@GetMapping
 	public Post detall(long id) {
 		postService.identityComments(id);
 		Post post = postService.get(id);
@@ -70,17 +75,18 @@ public class PostController extends BaseController {
 
 	/**
 	 * 修改post 不能修改素材
-	 * @param pid  post的主键
 	 */
-	@PostMapping(value = "/update")
-	public R update(@RequestBody PostVo postVo,
-	                @RequestParam long pid,
+	@PutMapping
+	public R update(@RequestBody PostForm form,
                     @RequestParam(name = "mids") String[] mids,
                     @CurrentUser User user
 			        ) throws Exception {
-		ValidatorUtils.validateEntity(postVo);
-		Post vo = postService.get(pid);
+		ValidatorUtils.validateEntity(form);
+		Post po = postService.get(form.getId());
 
+		if(user.getId()!=po.getAuthor().getId())
+			return R.error(403,"你没有权限进行操作");
+		BeanUtils.copyProperties(form,po);
 		return R.ok();
 	}
 
@@ -89,8 +95,17 @@ public class PostController extends BaseController {
 	 * @return msg
 	 */
 	@PostMapping
-	public R submit(@RequestBody PostVo postVo,
+	public R submit(@RequestBody PostForm form,
 	                @CurrentUser User user) throws Exception {
+
+		Post post = new Post();
+		BeanUtils.copyProperties(form,post);
+		postService.add(post);
+
+		List<Attach> attachs = handleAblums(form.getMids());
+		post.getAttribute().setAttaches(attachs);
+
+		postService.update(post);
 		return R.ok("提交的内容有误，请重新提交。");
 	}
 
@@ -109,7 +124,7 @@ public class PostController extends BaseController {
 		postService.delete(id, user.getId());
 	}
 
-	@GetMapping(value = "/end",params = "method=end")
+	@GetMapping(value = "/end")
 	public R end(@RequestParam long pid) {
 		Post vo = postService.get(pid);
 		if (vo == null) {
@@ -117,6 +132,5 @@ public class PostController extends BaseController {
 		}
 		postService.lock(pid);
 		return R.ok();
-
 	}
 }

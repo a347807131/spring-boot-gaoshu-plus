@@ -26,6 +26,7 @@ public interface CollegeService {
 	 */
 	List<College> getAll();
 
+	College get(String name);
 	/**
 	 * 分页查询
 	 * @param pageable 分页对象

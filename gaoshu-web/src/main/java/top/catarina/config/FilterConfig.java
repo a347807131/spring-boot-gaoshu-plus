@@ -16,13 +16,16 @@
 
 package top.catarina.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.DelegatingFilterProxy;
+import top.catarina.web.fileter.RequestCostFilter;
 import top.catarina.web.fileter.XssFilter;
 
 import javax.servlet.DispatcherType;
+import javax.xml.ws.soap.Addressing;
 
 /**
  * Filter配置
@@ -32,6 +35,10 @@ import javax.servlet.DispatcherType;
  */
 @Configuration
 public class FilterConfig {
+    @Autowired
+    XssFilter xssFilter;
+    @Autowired
+    RequestCostFilter costFilter;
 /*
     @Bean
     public FilterRegistrationBean shiroFilterRegistration() {
@@ -46,10 +53,21 @@ public class FilterConfig {
     }*/
 
     @Bean
+    public FilterRegistrationBean costFilterRegistration(){
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setDispatcherTypes(DispatcherType.REQUEST);
+        registration.setFilter(costFilter);
+        registration.addUrlPatterns("/*");
+        registration.setName("costFilter");
+        registration.setOrder(Integer.MAX_VALUE-2);
+        return registration;
+    }
+
+    @Bean
     public FilterRegistrationBean xssFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setDispatcherTypes(DispatcherType.REQUEST);
-        registration.setFilter(new XssFilter());
+        registration.setFilter(xssFilter);
         registration.addUrlPatterns("/*");
         registration.setName("xssFilter");
         registration.setOrder(Integer.MAX_VALUE);

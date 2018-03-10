@@ -1,4 +1,4 @@
-package top.catarina.wx.mp.controller;
+package top.catarina.web.controller.api.wechat.controller;
 
 import me.chanjar.weixin.common.bean.menu.WxMenu;
 import me.chanjar.weixin.common.bean.menu.WxMenuButton;

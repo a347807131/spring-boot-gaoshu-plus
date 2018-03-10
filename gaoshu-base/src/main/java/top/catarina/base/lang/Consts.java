@@ -28,4 +28,20 @@ public interface Consts {
 	 * 存放在session中用户的索引标识
 	 */
 	String USER_ID = "user_id";
+	/**
+	 * 公众号接入接口
+	 */
+	String MP_PORTAL_URI="/api/wechat/mp";
+	/**
+	 * 认证回调入口
+	 */
+	String MP_OAUTH_CALLBACK_URI=MP_PORTAL_URI+"/oauth/callback";
+	/**
+	 * 该项目微信支付接口入口
+	 */
+	String PAY_PORTAL_URI="/api/wechat/pay";
+
+	String PAY_NOTIFY_CALLBACK_URI=PAY_PORTAL_URI+"/notify";
+
+
 }

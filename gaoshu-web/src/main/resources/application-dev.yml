@@ -2,7 +2,7 @@
 app:
     #文件储存目录
     store.root:
-    domain: top.catarina.ngrok.xiaomiqiu.cn
+    domain: catarina.ngrok.xiaomiqiu.cn
 #微信开发相关配置
 wechat:
     mp:

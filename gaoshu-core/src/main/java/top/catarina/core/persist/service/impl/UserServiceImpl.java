@@ -10,6 +10,7 @@ package top.catarina.core.persist.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import top.catarina.base.lang.Consts;
 import top.catarina.base.lang.Enums.*;
 import top.catarina.core.persist.dao.UserDao;
@@ -32,6 +33,18 @@ public class UserServiceImpl implements UserService {
 	public User get(long id) {
 		return userDao.getOne(id);
 	}
+
+	@Override
+	public long add(User user) {
+		Assert.notNull(user,"user实体类为空");
+		return userDao.save(user).getId();
+	}
+
+	@Override
+	public User get(String openId) {
+		return userDao.getByOpenId(openId);
+	}
+
 
 	@Override
 	public void lock(long id) {

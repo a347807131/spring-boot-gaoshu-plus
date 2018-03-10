@@ -31,6 +31,7 @@ public class Comment implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
+	@ManyToOne
 	@JoinColumn(name = "uid")
 	private User author;
 

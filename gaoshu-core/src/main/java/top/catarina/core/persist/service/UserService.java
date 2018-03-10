@@ -26,6 +26,16 @@ public interface UserService {
 	User get(long id);
 
 	/**
+	 * 添加
+	 */
+	long add(User user);
+
+	/**
+	 * 通过openid查询
+	 */
+	User get(String openId);
+
+	/**
 	 * 锁定用户
 	 * @param id
 	 */

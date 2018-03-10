@@ -6,23 +6,22 @@
 |   http://www.catarina.top
 +---------------------------------------------------------------------------
 */
-package top.catarina;
+package top.catarina.core.data;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import top.catarina.base.context.AppContext;
+import lombok.Data;
+import org.hibernate.validator.constraints.NotBlank;
+import top.catarina.core.persist.entity.College;
 
 /**
  * @author Civin
  * 邮箱：   Civin@bupt.edu.cn
- * @since 2018-03-07 20:49
+ * @since 2018-03-10 14:26
  */
-public class FileRepoTest  extends ApplicationTest {
+@Data
+public class UserForm {
 
-	@Autowired
-	AppContext appContext;
-
-	@Override
-	public void test() {
-		System.out.println(appContext.getRoot());
-	}
+	@NotBlank
+	private String nickname;
+	@NotBlank
+	private String collegeName;
 }

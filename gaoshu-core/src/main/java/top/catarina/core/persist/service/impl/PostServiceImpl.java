@@ -54,6 +54,12 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
+	public long add(Post post) {
+		Assert.notNull(post);
+		return postDao.save(post).getId();
+	}
+
+	@Override
 	public long update(Post post) {
 		return 0;
 	}

@@ -14,11 +14,12 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import top.catarina.core.annotation.resolver.CurrentUserMethodArgumentResolver;
+import top.catarina.web.fileter.RequestCostFilter;
 
 import java.util.List;
 
 /**
- * 静态资源配置
+ * web资源配置
  * @author Civin
  * 邮箱：   Civin@bupt.edu.cn
  * @since 2018-03-07 18:38
@@ -28,6 +29,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 	@Autowired
 	CurrentUserMethodArgumentResolver currentUserMethodArgumentResolver;
+
+
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {

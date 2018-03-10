@@ -41,7 +41,7 @@ public class DaoTest extends ApplicationTest {
 	@Override
 	public void test() {
 		User user = new User();
-		user.setMobile("13716999059");
+		user.setCity("北京");
 		userDao.save(user);
 		System.out.println(user.getId());
 	}

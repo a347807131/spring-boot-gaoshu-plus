@@ -16,6 +16,9 @@
 
 package top.catarina.web.fileter;
 
+import org.springframework.stereotype.Component;
+
+import javax.persistence.Column;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -26,6 +29,7 @@ import java.io.IOException;
  * @email sunlightcs@gmail.com
  * @date 2017-04-01 10:20
  */
+@Component
 public class XssFilter implements Filter {
 
 	@Override

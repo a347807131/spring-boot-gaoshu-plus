@@ -6,16 +6,28 @@
 |   http://www.catarina.top
 +---------------------------------------------------------------------------
 */
-package top.catarina.core.persist.dao;
+package top.catarina.core.data;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import lombok.Data;
+import org.hibernate.validator.constraints.NotBlank;
 import top.catarina.core.persist.entity.User;
 
 /**
  * @author Civin
  * 邮箱：   Civin@bupt.edu.cn
- * @since 2018-03-07 21:30
+ * @since 2018-03-10 15:01
  */
-public interface UserDao extends JpaRepository<User,Long>{
-	User getByOpenId(String openId);
+@Data
+public class CommentForm {
+
+	private long id;
+
+	@NotBlank
+	private String content;
+
+	private String[] mids;
+
+	private long pid;
+
+	private User author;
 }

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import top.catarina.core.persist.entity.PostAttribute;
 import top.catarina.core.persist.entity.User;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -21,7 +22,7 @@ import java.util.Date;
  * @since 2018-03-09 11:14
  * 作为列表使用，不加载postAttribut
  */
-public class PostVo {
+public class PostVo implements Serializable{
 	private long id;
 
 	/**

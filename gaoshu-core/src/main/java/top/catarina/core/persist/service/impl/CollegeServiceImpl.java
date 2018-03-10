@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import top.catarina.core.persist.dao.CollegeDao;
 import top.catarina.core.persist.entity.College;
 import top.catarina.core.persist.service.CollegeService;
@@ -30,6 +31,12 @@ public class CollegeServiceImpl implements CollegeService{
 	@Override
 	public List<College> getAll() {
 		return collegeDao.findAll();
+	}
+
+	@Override
+	public College get(String name) {
+		Assert.notNull(name);
+		return collegeDao.findByCollegeName(name);
 	}
 
 	@Override

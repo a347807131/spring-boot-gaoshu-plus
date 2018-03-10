@@ -13,6 +13,8 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 
 /**
  * @author langhsu
@@ -22,8 +24,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class AppContext {
 
+	/**
+	 * 网站地址
+	 */
 	@Value("${app.domain}")
 	private String domain = "localhost";
+	/**
+	 * 微信支付后微信微信服务器异步通知链接
+	 */
+	private String notifyUri="/api/wechat/pay/notify";
+
 
 	/*
 	 * 文件存储-根目录
@@ -61,6 +71,6 @@ public class AppContext {
 	 * 系统配置信息
 	 * - 在 StartupListener 类中加载
 	 */
-	//public Map<String, String> config;
+	public Map<String, String> config;
 
 }
