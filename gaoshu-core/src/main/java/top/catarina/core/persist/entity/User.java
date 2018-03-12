@@ -8,8 +8,11 @@
 */
 package top.catarina.core.persist.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -24,10 +27,11 @@ import java.util.Date;
  * 邮箱：   Civin@bupt.edu.cn
  * @since 2018-03-07 21:21
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "tb_user")
-public class User implements Serializable{
+public class User extends BaseEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -84,12 +88,10 @@ public class User implements Serializable{
 
 	/**注册时间*/
 	@Temporal(value = TemporalType.TIMESTAMP)
-	@Column(updatable = false,insertable = false)
 	//设置插入数据时自动更新为当前时间
 	@CreationTimestamp
 	private Date created;
 
-	@Column(name = "last_login",insertable = false)
 	@Temporal(value = TemporalType.TIMESTAMP)
 	//设置更改或插入数据时自动更新为当前时间
 	@UpdateTimestamp

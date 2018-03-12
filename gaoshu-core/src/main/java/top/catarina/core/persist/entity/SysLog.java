@@ -9,6 +9,7 @@
 package top.catarina.core.persist.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -39,6 +40,8 @@ public class SysLog implements Serializable{
 	//IP地址
 	private String ip;
 	//创建时间
+	@Temporal(value = TemporalType.TIMESTAMP)
+	@UpdateTimestamp
 	private Date createDate;
 
 }

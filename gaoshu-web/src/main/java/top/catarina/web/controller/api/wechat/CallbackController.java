@@ -1,4 +1,4 @@
-package top.catarina.web.controller.api.wechat.controller;
+package top.catarina.web.controller.api.wechat;
 
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;

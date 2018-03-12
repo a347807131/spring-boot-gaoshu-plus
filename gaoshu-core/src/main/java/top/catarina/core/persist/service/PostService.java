@@ -10,8 +10,8 @@ package top.catarina.core.persist.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import top.catarina.core.data.PostVo;
 import top.catarina.core.persist.entity.Post;
+import top.catarina.core.persist.entity.PostAttribute;
 
 /**
  * @author Civin
@@ -24,7 +24,7 @@ public interface PostService {
 	 *
 	 * @param post 实体类
 	 */
-	long post(Post post);
+	long post(PostAttribute post);
 
 	/**
 	 * 文章详情
@@ -32,9 +32,10 @@ public interface PostService {
 	 * @param id 主键
 	 * @return 详情属性
 	 */
-	Post get(long id);
+	PostAttribute get(long id);
 
-	long add(Post post);
+	Post getPost(long id);
+
 
 	/**
 	 * 更新文章方法 应该为只可更新部分属性 后续完善
@@ -90,14 +91,14 @@ public interface PostService {
 	/**
 	 * 分页查询所有文章
 	 */
-	Page<PostVo> paging(Pageable pageable);
+	Page<Post> paging(Pageable pageable);
 
 	/**
 	 * 查询个人发布文章
 	 *
 	 * @param privacy  权限
 	 */
-	Page<PostVo> pagingByAuthorId(Pageable pageable, long userId, int privacy);
+	Page<Post> pagingByAuthorId(Pageable pageable, long userId, int privacy);
 
 	/**
 	 * 用于用户查询自己的文章
@@ -106,7 +107,7 @@ public interface PostService {
 	 * @param userId   用户id
 	 * @return 包装类
 	 */
-	Page<PostVo> pagingByAuthorId(Pageable pageable, long userId);
+	Page<Post> pagingByAuthorId(Pageable pageable, long userId);
 
 	/**
 	 * 根据关键字搜索
@@ -117,11 +118,10 @@ public interface PostService {
 
 	/**
 	 * 搜索 Tag
-	 *
-	 * @param tag      标签
+	 *  @param tag      标签
 	 * @param pageable 分页配置
 	 */
-	Page<PostVo> searchByTag(String tag, Pageable pageable);
+	Page<Post> searchByTag(String tag, Pageable pageable);
 
 
 }

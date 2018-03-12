@@ -22,5 +22,5 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(classes = Application.class)
 public abstract class ApplicationTest {
 	@Test
-	public abstract void test();
+	public abstract void test() throws Exception;
 }

@@ -8,17 +8,23 @@
 */
 package top.catarina.web.controller;
 
+import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpMaterialService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.util.Assert;
 import top.catarina.base.context.AppContext;
 import top.catarina.base.upload.FileRepo;
 import top.catarina.core.persist.entity.Attach;
 import top.catarina.core.persist.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -32,6 +38,8 @@ public abstract class BaseController {
 	protected AppContext appContext;
 	@Autowired
 	FileRepo fileRepo;
+	@Autowired
+	WxMpMaterialService materialService;
 
 	/**
 	 * 包装分页对象
@@ -97,9 +105,24 @@ public abstract class BaseController {
 	/**
 	 * 处理上传的素材id，并重微信服务器下载到本地
 	 */
-	protected List<Attach> handleAblums(String[] ablums) {
+	protected List<Attach> handleAblums(String[] ablums) throws Exception {
+		if (ablums == null)
+			return Collections.emptyList();
+		ArrayList<Attach> attaches = new ArrayList<>();
+		for (String mid : ablums) {
+			File temp = materialService.mediaDownload(mid);
+			int[] size = fileRepo.imageSize(temp.getPath());
+			Attach attach = new Attach();
+			attach.setMId(mid);
+			attach.setWidth(size[0]);
+			attach.setHeight(size[1]);
+			String pathAndFileName = fileRepo.storeAndScale(temp);
+			attach.setOriginal(appContext.getOrigDir()+pathAndFileName);
+			attach.setPreview(appContext.getTempDir()+pathAndFileName);
 
-		return null;
+			attaches.add(attach);
+		}
+		return attaches;
 	}
 
 }

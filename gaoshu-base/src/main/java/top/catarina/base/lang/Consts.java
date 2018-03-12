@@ -21,6 +21,10 @@ public interface Consts {
 	 */
 	int IDENTITY_STEP = 1;
 	/**
+	 * 默认压缩后的像素
+	 */
+	int PIC_SIZE=50;
+	/**
 	 * 默认头像
 	 */
 	String DEFAULT_AVATAR = "/static/image/avatar/default.png";

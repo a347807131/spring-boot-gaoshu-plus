@@ -27,13 +27,12 @@ import java.util.List;
 public class PostAttribute implements Serializable{
 
 	@Id
-	@GeneratedValue(generator = "pkGenerator")
-	@GenericGenerator(name = "pkGenerator", strategy = "foreign", parameters = @Parameter(name = "property", value = "post"))
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	/*@OneToOne(mappedBy = "attribute")
-	@JoinColumn(name = "id")
-	private Post post;*/
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "pid")
+	private Post post;
 
 	//cascade没有写，即是默认值，就是不级联的意思。
 	@OneToMany
@@ -45,4 +44,5 @@ public class PostAttribute implements Serializable{
 	@OneToMany
 	@JoinColumn(name = "pid")
 	private List<Attach> attaches;
+
 }

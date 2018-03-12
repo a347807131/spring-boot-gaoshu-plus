@@ -68,4 +68,13 @@ public class UserServiceImpl implements UserService {
 		one.setPosts(one.getPosts()+ Consts.IDENTITY_STEP);
 		return one.getPosts();
 	}
+
+
+	@Override
+	public int changeGolds(long userId, int golds) {
+		User po = userDao.getOne(userId);
+		Assert.isTrue(po.getGolds()>=golds);
+		po.setGolds(po.getPosts()-golds);
+		return po.getGolds();
+	}
 }

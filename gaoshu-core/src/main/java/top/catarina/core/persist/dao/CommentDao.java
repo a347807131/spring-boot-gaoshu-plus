@@ -8,6 +8,8 @@
 */
 package top.catarina.core.persist.dao;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import top.catarina.core.persist.entity.Comment;
 

@@ -5,6 +5,7 @@ import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "tb_notify")
-public class Notify {
+public class Notify implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -32,9 +33,6 @@ public class Notify {
 	private long postId;
 
 	@Temporal(value = TemporalType.TIMESTAMP)
-	//设置不可readonly
-	@Column(insertable = false, updatable = false)
-	//设置更改时自动更新为当前时间
 	@Generated(GenerationTime.INSERT)
 	private Date created;
 

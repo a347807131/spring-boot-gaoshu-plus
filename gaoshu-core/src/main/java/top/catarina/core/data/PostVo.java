@@ -69,6 +69,4 @@ public class PostVo implements Serializable{
 	 */
 	private User author;
 
-	@JsonIgnore
-	private PostAttribute attribute;
 }

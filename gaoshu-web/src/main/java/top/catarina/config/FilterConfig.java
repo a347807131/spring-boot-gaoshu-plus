@@ -35,12 +35,17 @@ import javax.xml.ws.soap.Addressing;
  */
 @Configuration
 public class FilterConfig {
-    @Autowired
+    private final
     XssFilter xssFilter;
-    @Autowired
+    private final
     RequestCostFilter costFilter;
-/*
-    @Bean
+
+    @Autowired
+    public FilterConfig(RequestCostFilter costFilter, XssFilter xssFilter) {
+        this.costFilter = costFilter;
+        this.xssFilter = xssFilter;
+    }
+  /*  @Bean
     public FilterRegistrationBean shiroFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(new DelegatingFilterProxy("shiroFilter"));

@@ -51,7 +51,6 @@ public class NotifyServiceImpl implements NotifyService {
 	@Override
 	public void readed4Me(long ownId) {
 		List<Notify> list = notifyDao.findByOwnId(ownId);
-		Assert.notNull(list);
 		for (Notify notify:list) {
 			notify.setStatus(Enums.StatusNotify.READED.getIndex());
 		}

@@ -20,6 +20,11 @@ import java.io.InputStream;
  * @apiNote 方法统一返回的是filenameutils生成的3级目录文件名
  */
 public interface FileRepo {
+
+	String storeAndScale(File file) throws Exception;
+
+	String storeAndScale(File file,int maxWidth) throws Exception;
+
 	/**
 	 * 保存临时图片
 	 * - 临时图片不会生成复杂的多级目录
@@ -78,7 +83,6 @@ public interface FileRepo {
 
 	/**
 	 * 存储路径
-	 * @param storePath
 	 */
 	void deleteFile(String storePath);
 }

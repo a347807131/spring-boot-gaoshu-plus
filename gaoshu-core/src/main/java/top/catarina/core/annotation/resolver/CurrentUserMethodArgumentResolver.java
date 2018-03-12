@@ -1,7 +1,9 @@
 package top.catarina.core.annotation.resolver;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.RequestAttributes;
@@ -11,6 +13,7 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 import top.catarina.base.lang.Consts;
 import top.catarina.core.annotation.CurrentUser;
 import top.catarina.core.persist.entity.User;
+import top.catarina.core.persist.service.UserService;
 
 /**
  * 增加方法注入，将含有 @CurrentUser 注解的方法参数注入当前登录用户
@@ -19,6 +22,14 @@ import top.catarina.core.persist.entity.User;
  */
 @Component
 public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentResolver {
+	private final
+	UserService userService;
+
+	@Autowired
+	public CurrentUserMethodArgumentResolver(UserService userService) {
+		this.userService = userService;
+	}
+
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		return parameter.getParameterType().isAssignableFrom(User.class)
@@ -28,7 +39,7 @@ public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentR
 	@Override
 	public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
 		User user = (User) nativeWebRequest.getAttribute(Consts.USER_ID, RequestAttributes.SCOPE_SESSION);
-		if (user != null) {
+		if(user!=null){
 			return user;
 		}
 		throw new MissingServletRequestPartException("currentUser");

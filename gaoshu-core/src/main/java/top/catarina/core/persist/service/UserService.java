@@ -57,4 +57,9 @@ public interface UserService {
 	 */
 	int identityPosts(long userId);
 
+	/**
+	 * 更改金币数量
+	 */
+	int changeGolds(long userId,int gold);
+
 }

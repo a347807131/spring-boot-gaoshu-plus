@@ -30,19 +30,13 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Order get(long id) {
-		Order po = orderDao.getOne(id);
-		Order order = new Order();
-		BeanUtils.copyProperties(po,order);
-		return order;
+		return orderDao.getOne(id);
 	}
 
 	@Override
 	public long create(Order order) {
-		Order po = new Order();
-		BeanUtils.copyProperties(order,po);
-		po.setTimeStart(new Date());
-		Order entity = orderDao.save(po);
-		return entity.getOutTradeNo();
+		return orderDao.save(order).getOutTradeNo();
+
 	}
 
 	@Override

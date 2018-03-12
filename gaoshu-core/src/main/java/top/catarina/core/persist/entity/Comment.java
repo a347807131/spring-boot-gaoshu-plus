@@ -9,11 +9,13 @@
 package top.catarina.core.persist.entity;
 
 import lombok.Data;
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
-import org.hibernate.annotations.Type;
+import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -23,10 +25,11 @@ import java.util.List;
  * 邮箱：   Civin@bupt.edu.cn
  * @since 2018-03-07 21:26
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name ="tb_comments" )
-public class Comment implements Serializable{
+public class Comment extends BaseEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -39,15 +42,12 @@ public class Comment implements Serializable{
 	@Type(type = "text")
 	private String content;
 
-	@OneToMany(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(name="cid")
 	private List<Attach> attachs;
 
 	@Temporal(value = TemporalType.TIMESTAMP)
-	//设置不可readonly
-	@Column(insertable = false, updatable = false)
-	//设置更改时自动更新为当前时间
-	@Generated(GenerationTime.INSERT)
+	@CreationTimestamp
 	private Date created;
 
 	private int status;

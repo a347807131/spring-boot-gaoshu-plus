@@ -1,4 +1,4 @@
-package top.catarina.web.controller.api.wechat.controller;
+package top.catarina.web.controller.api.wechat;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

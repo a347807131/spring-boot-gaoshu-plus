@@ -6,24 +6,23 @@
 |   http://www.catarina.top
 +---------------------------------------------------------------------------
 */
-package top.catarina.core.data;
+package top.catarina.core.persist.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import org.hibernate.validator.constraints.NotBlank;
-import top.catarina.core.persist.entity.College;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
  * @author Civin
  * 邮箱：   Civin@bupt.edu.cn
- * @since 2018-03-10 14:26
+ * @since 2018-03-10 23:01
  */
-@Data
-public class UserForm implements Serializable{
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+public class BaseEntity implements Serializable {
 
-	@NotBlank
-	private String nickname;
-	@NotBlank
-	private String collegeName;
 }

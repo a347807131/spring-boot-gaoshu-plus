@@ -13,13 +13,15 @@ import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 import top.catarina.core.persist.entity.User;
 
+import java.io.Serializable;
+
 /**
  * @author Civin
  * 邮箱：   Civin@bupt.edu.cn
  * @since 2018-03-10 14:50
  */
 @Data
-public class PostForm {
+public class PostForm implements Serializable{
 
 	@NotBlank
 	@JsonProperty("pid")

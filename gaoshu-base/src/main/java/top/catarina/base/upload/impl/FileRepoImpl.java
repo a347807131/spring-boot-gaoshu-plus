@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import top.catarina.base.context.AppContext;
+import top.catarina.base.lang.Consts;
 import top.catarina.base.utils.FileNameUtils;
 import top.catarina.base.utils.FileTypeUtils;
 import top.catarina.base.utils.ImageUtils;
@@ -34,6 +35,31 @@ public class FileRepoImpl extends AbstractFileRepo {
 
 	@Autowired
 	private AppContext context;
+
+	/**
+	 * 项目中只会用到这个方法
+	 */
+	@Override
+	public String storeAndScale(File file,int maxWidth) throws Exception {
+		//多级目录加文件名
+		String pathAndFileName = FileNameUtils.genPathAndFileName(getExt(file.getName()));
+		//压缩文件存放路径
+		String scaleFilePath=context.getRoot()+context.getThumbsDir()+pathAndFileName;
+		String oriFilePath=context.getRoot()+context.getOrigDir()+pathAndFileName;
+
+		FileUtils.copyFile(file,new File(oriFilePath));
+		checkDirAndCreate(new File(scaleFilePath));
+		// 根据临时文件生成略缩图
+		ImageUtils.resize(file.getAbsolutePath(), scaleFilePath,maxWidth);
+
+		return pathAndFileName;
+	}
+
+	@Override
+	public String storeAndScale(File file) throws Exception{
+		return storeAndScale(file, Consts.PIC_SIZE);
+	}
+
 
 	@Override
 	public String temp(InputStream in) throws IOException {
@@ -123,9 +149,8 @@ public class FileRepoImpl extends AbstractFileRepo {
 
 	@Override
 	public int[] imageSize(String storePath) {
-		String root = context.getRoot();
 
-		File dest = new File(root + storePath);
+		File dest = new File( storePath);
 		int[] ret = new int[2];
 
 		try {

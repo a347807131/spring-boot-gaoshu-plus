@@ -29,11 +29,6 @@ public class AppContext {
 	 */
 	@Value("${app.domain}")
 	private String domain = "localhost";
-	/**
-	 * 微信支付后微信微信服务器异步通知链接
-	 */
-	private String notifyUri="/api/wechat/pay/notify";
-
 
 	/*
 	 * 文件存储-根目录

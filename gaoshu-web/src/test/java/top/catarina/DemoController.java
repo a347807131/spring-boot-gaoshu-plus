@@ -6,22 +6,22 @@
 |   http://www.catarina.top
 +---------------------------------------------------------------------------
 */
-package top.catarina.core;
+package top.catarina;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import top.catarina.ApplicationTest;
-import top.catarina.core.persist.dao.CommentDao;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Civin
  * 邮箱：   Civin@bupt.edu.cn
- * @since 2018-03-12 13:55
+ * @since 2018-03-12 14:23
  */
-public class DaoTest extends ApplicationTest {
-	@Autowired
-	CommentDao commentDao;
-	@Override
-	public void test() throws Exception {
-		commentDao.deleteAll();
+@RestController
+@RequestMapping("/demo")
+public class DemoController {
+	@GetMapping("1")
+	public String demo1(){
+		return "demo1";
 	}
 }

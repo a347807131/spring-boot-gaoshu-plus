@@ -8,10 +8,7 @@
 */
 package top.catarina.config;
 
-import me.chanjar.weixin.mp.api.WxMpConfigStorage;
-import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
-import me.chanjar.weixin.mp.api.WxMpMessageRouter;
-import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.api.*;
 import me.chanjar.weixin.mp.constant.WxMpEventConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -133,6 +130,14 @@ public class WxMpConfiguration {
 		newRouter.rule().async(false).handler(this.getMsgHandler()).end();
 
 		return newRouter;
+	}
+
+	/**
+	 * 素材管理实现类
+	 */
+	@Bean
+	public WxMpMaterialService wxMpMaterialService(WxMpService wxMpService){
+		return wxMpService.getMaterialService();
 	}
 
 	protected MenuHandler getMenuHandler() {

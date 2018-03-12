@@ -18,10 +18,16 @@ import java.util.HashMap;
 @Component
 @WebListener
 public class StartupListener implements ServletContextListener {
-	@Autowired
+	private final
 	AppContext appContext;
-	@Autowired
+	private final
 	WxMpService mpService;
+
+	@Autowired
+	public StartupListener(AppContext appContext, WxMpService mpService) {
+		this.appContext = appContext;
+		this.mpService = mpService;
+	}
 
 	@Override
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -31,9 +37,9 @@ public class StartupListener implements ServletContextListener {
 		 */
 		HashMap<String, String> map = new HashMap<>();
 
-		map.put("authUrl", mpService.oauth2buildAuthorizationUrl("http://"+appContext.getDomain()+Consts.MP_OAUTH_CALLBACK_URI,
+		map.put("authUrl", mpService.oauth2buildAuthorizationUrl("http://" + appContext.getDomain() + Consts.MP_OAUTH_CALLBACK_URI,
 				WxConsts.OAuth2Scope.SNSAPI_USERINFO, String.valueOf(new Date().getTime())));
-		map.put("notifyUrl","http://"+appContext.getDomain()+appContext.getNotifyUri());
+		map.put("notifyUrl", "http://" + appContext.getDomain() + Consts.PAY_NOTIFY_CALLBACK_URI);
 		appContext.setConfig(map);
 	}
 

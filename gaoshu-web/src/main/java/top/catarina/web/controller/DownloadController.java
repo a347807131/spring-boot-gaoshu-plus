@@ -24,7 +24,7 @@ public class DownloadController extends BaseController {
 	/**
 	 * 素材文件下载接口
 	 */
-	@GetMapping(value = {"/store/{type}/{year}/{monthDay}/{name}","/store/thumbs/{year}/{monthDay}/{name}"})
+	@GetMapping(value = {"/store/orig/{year}/{monthDay}/{name}","/store/thumbs/{year}/{monthDay}/{name}"})
 	public ResponseEntity<byte[]> download(HttpServletRequest request) throws IOException {
 		String uriPath = request.getRequestURI();
 		return handle(appContext.getRoot()+uriPath);

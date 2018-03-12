@@ -9,6 +9,8 @@
 package top.catarina.core.persist.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,7 +24,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "tb_orders")
-public class Order implements Serializable {
+public class Order implements Serializable{
 	/**
 	 * 根据微信文档设置的属性名字
 	 */
@@ -54,12 +56,14 @@ public class Order implements Serializable {
 	 * 交易起始时间
 	 */
 	@Temporal(value = TemporalType.TIMESTAMP)
+	@CreationTimestamp
 	private Date timeStart;
 
 	/**
 	 * 交易结束时间
 	 */
 	@Temporal(value = TemporalType.TIMESTAMP)
+	@UpdateTimestamp
 	private Date timeExpire;
 
 	@Column(name = "spbill_create_ip",nullable = false)

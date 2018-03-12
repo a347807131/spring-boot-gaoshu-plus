@@ -57,4 +57,5 @@ public interface CommentService {
 	 * @param uId 用户id
 	 */
 	void delete(long id, long uId);
+
 }

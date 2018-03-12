@@ -11,11 +11,12 @@ import top.catarina.base.upload.FileRepo;
 import top.catarina.base.utils.R;
 import top.catarina.core.annotation.CurrentUser;
 import top.catarina.core.data.PostForm;
-import top.catarina.core.data.PostVo;
 import top.catarina.core.persist.entity.Attach;
 import top.catarina.core.persist.entity.Post;
+import top.catarina.core.persist.entity.PostAttribute;
 import top.catarina.core.persist.entity.User;
 import top.catarina.core.persist.service.PostService;
+import top.catarina.core.persist.service.UserService;
 import top.catarina.core.validator.ValidatorUtils;
 
 import java.util.List;
@@ -32,6 +33,8 @@ public class PostController extends BaseController {
 	PostService postService;
 	@Autowired
 	FileRepo fileRepo;
+	@Autowired
+	UserService userService;
 
 	/**
 	 * 公共post列表页面
@@ -40,10 +43,9 @@ public class PostController extends BaseController {
 	 * @return 实体类
 	 */
 	@GetMapping("/list")
-	public Page<PostVo> list(@RequestParam(defaultValue = "1") Integer pn) {
+	public Page<Post> list(@RequestParam(defaultValue = "1") Integer pn) {
 		Sort sort = new Sort(Sort.Direction.DESC, "created");
-		Page<PostVo> page = postService.paging(wrapPage(pn, sort));
-		return page;
+		return postService.paging(wrapPage(pn, sort));
 	}
 
 	/**
@@ -53,11 +55,10 @@ public class PostController extends BaseController {
 	 * @return page实体
 	 */
 	@GetMapping("/mylist")
-	public Page<PostVo> myPosts(@CurrentUser User user,
-	                            @RequestParam(defaultValue = "1") Integer pn) {
+	public Page<Post> myPosts(@CurrentUser User user,
+	                          @RequestParam(defaultValue = "1") Integer pn) {
 		Sort sort = new Sort(Sort.Direction.DESC, "created");
-		Page<PostVo> page = postService.pagingByAuthorId(wrapPage(pn, sort), user.getId(), Enums.Privacy.OPEN.getIndex());
-		return page;
+		return postService.pagingByAuthorId(wrapPage(pn, sort), user.getId(), Enums.Privacy.OPEN.getIndex());
 	}
 
 	/**
@@ -67,10 +68,9 @@ public class PostController extends BaseController {
 	 * @return post的数据
 	 */
 	@GetMapping
-	public Post detall(long id) {
+	public PostAttribute detall(long id) {
 		postService.identityComments(id);
-		Post post = postService.get(id);
-		return post;
+		return postService.get(id);
 	}
 
 	/**
@@ -78,15 +78,18 @@ public class PostController extends BaseController {
 	 */
 	@PutMapping
 	public R update(@RequestBody PostForm form,
-                    @RequestParam(name = "mids") String[] mids,
                     @CurrentUser User user
 			        ) throws Exception {
 		ValidatorUtils.validateEntity(form);
-		Post po = postService.get(form.getId());
+		Post po = postService.getPost(form.getId());
 
 		if(user.getId()!=po.getAuthor().getId())
 			return R.error(403,"你没有权限进行操作");
-		BeanUtils.copyProperties(form,po);
+		po.setTag(form.getTag());
+		po.setContent(form.getContent());
+		po.setTitle(form.getTitle());
+
+		postService.update(po);
 		return R.ok();
 	}
 
@@ -99,14 +102,17 @@ public class PostController extends BaseController {
 	                @CurrentUser User user) throws Exception {
 
 		Post post = new Post();
+		post.setAuthor(user);
 		BeanUtils.copyProperties(form,post);
-		postService.add(post);
-
+		PostAttribute postAttribute = new PostAttribute();
+		postAttribute.setPost(post);
+		//处理素材
 		List<Attach> attachs = handleAblums(form.getMids());
-		post.getAttribute().setAttaches(attachs);
-
-		postService.update(post);
-		return R.ok("提交的内容有误，请重新提交。");
+		postAttribute.setAttaches(attachs);
+		postService.post(postAttribute);
+		if(post.getReward()>0)
+			userService.changeGolds(user.getId(),form.getReward());
+		return R.ok();
 	}
 
 	/**
@@ -117,16 +123,18 @@ public class PostController extends BaseController {
 	 * @param user 当前会话用户
 	 */
 	@DeleteMapping
-	public void delete(@RequestParam Long id, @CurrentUser User user) {
+	public R delete(@RequestParam Long id, @CurrentUser User user) {
 		//删除附属文件
-		Post post = postService.get(id);
-		Assert.notNull(post, "没有对应id的post。");
+		Post post = postService.getPost(id);
+		if(post==null)
+			return R.error(404,"没有对应的推送");
 		postService.delete(id, user.getId());
+		return R.ok();
 	}
 
-	@GetMapping(value = "/end")
+	@GetMapping(params = "method=end")
 	public R end(@RequestParam long pid) {
-		Post vo = postService.get(pid);
+		Post vo = postService.getPost(pid);
 		if (vo == null) {
 			return R.error("未查到对应的主题。");
 		}

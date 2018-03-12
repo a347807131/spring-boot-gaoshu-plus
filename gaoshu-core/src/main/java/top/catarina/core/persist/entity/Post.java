@@ -9,8 +9,10 @@
 package top.catarina.core.persist.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.NotBlank;
@@ -27,10 +29,11 @@ import java.util.Date;
  * 邮箱：   Civin@bupt.edu.cn
  * @since 2018-03-08 13:53
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "tb_posts")
-public class Post implements Serializable {
+public class Post extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -65,7 +68,7 @@ public class Post implements Serializable {
 	/**
 	 * 标签，多个都好隔开
 	 */
-	@Column(nullable = false,length = 16)
+	@Column(length = 16)
 	private String tag;
 	/**
 	 * 内容
@@ -79,26 +82,17 @@ public class Post implements Serializable {
 	private int views;
 
 	@Temporal(value = TemporalType.TIMESTAMP)
-	@Column(updatable = false,insertable = false)
-	//设置插入数据时自动更新为当前时间
 	@CreationTimestamp
 	private Date created;
 
 	@Temporal(value = TemporalType.TIMESTAMP)
-	//设置更改或插入数据时自动更新为当前时间
-	@Column(insertable = false)
 	@UpdateTimestamp
 	private Date lastUpdate;
 	/**
 	 * 作者
 	 */
-	@ManyToOne(cascade = CascadeType.DETACH)
+	@ManyToOne
 	@JoinColumn(name = "author_id")
 	private User author;
 
-
-	@JsonIgnore
-	@OneToOne(cascade = CascadeType.ALL)
-	@PrimaryKeyJoinColumn //配置共享主键，否则会额外生成外键关联列
-	private PostAttribute attribute;
 }

@@ -1,4 +1,4 @@
-package top.catarina.web.controller.api.wechat.controller;
+package top.catarina.web.controller.api.wechat;
 
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;

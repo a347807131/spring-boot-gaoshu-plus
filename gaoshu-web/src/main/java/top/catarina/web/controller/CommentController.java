@@ -39,8 +39,8 @@ public class CommentController extends BaseController {
 	 * @param toId 所属post的id
 	 * @return 包装了Comment的page
 	 */
-	@GetMapping("/list/{toId}")
-	public Page<Comment> view(Integer pn, @PathVariable long toId) {
+	@GetMapping("/list")
+	public Page<Comment> view(Integer pn, @RequestParam long toId) {
 		Sort sort = new Sort(Sort.Direction.ASC, "sort");
 		Pageable pageable = wrapPage(pn, sort);
 		Page<Comment> list = commentService.paging(toId, pageable);
@@ -54,7 +54,7 @@ public class CommentController extends BaseController {
 	 */
 	@PostMapping
 	public R post(@RequestBody CommentForm form,
-	              @CurrentUser User user) {
+	              @CurrentUser User user) throws Exception {
 		ValidatorUtils.validateEntity(form);
 		form.setAuthor(user);
 		Comment comment = new Comment();
