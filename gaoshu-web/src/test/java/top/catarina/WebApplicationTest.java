@@ -22,6 +22,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import top.catarina.base.lang.Consts;
+import top.catarina.core.persist.entity.User;
+import top.catarina.core.persist.service.UserService;
 
 /**
  * @author Civin
@@ -38,6 +41,8 @@ public abstract class WebApplicationTest {
 	protected MockHttpSession session;
 	protected MockHttpServletRequest request;
 	protected MockHttpServletResponse response;
+	@Autowired
+	UserService userService;
 
 	@Autowired
 	protected WebApplicationContext webApplicationContext;
@@ -47,6 +52,9 @@ public abstract class WebApplicationTest {
 		response =new MockHttpServletResponse();
 		request=new MockHttpServletRequest(webApplicationContext.getServletContext());
 		session=new MockHttpSession(webApplicationContext.getServletContext());
+		User user = userService.get(1);
+		session.setAttribute(Consts.USER_ID,user);
+
 		request.setSession(session);
 	}
 	@Test

@@ -1,5 +1,7 @@
 package top.catarina.web.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,12 +20,14 @@ import java.io.IOException;
  * @author Civin
  * @create 2018-02-15 10:58
  */
+@Api("素材下载控制器")
 @Controller
 public class DownloadController extends BaseController {
 
 	/**
 	 * 素材文件下载接口
 	 */
+	@ApiOperation(value = "素材获取接口",notes = "前端直接根据attach信息中url获取素材")
 	@GetMapping(value = {"/store/orig/{year}/{monthDay}/{name}","/store/thumbs/{year}/{monthDay}/{name}"})
 	public ResponseEntity<byte[]> download(HttpServletRequest request) throws IOException {
 		String uriPath = request.getRequestURI();

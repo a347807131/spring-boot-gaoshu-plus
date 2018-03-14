@@ -6,27 +6,22 @@
 |   http://www.catarina.top
 +---------------------------------------------------------------------------
 */
-package top.catarina.core.data;
+package top.catarina.core;
 
-import lombok.Data;
-import org.hibernate.validator.constraints.NotBlank;
-
-import java.io.Serializable;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 
 /**
  * @author Civin
  * 邮箱：   Civin@bupt.edu.cn
- * @since 2018-03-10 15:01
+ * @since 2018-03-13 19:10
  */
-@Data
-public class CommentForm implements Serializable{
+public class UserProxy implements InvocationHandler {
 
-	private long id;
-
-	@NotBlank
-	private String content;
-
-	private String[] mids;
-
-	private long pid;
+	@Override
+	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+		System.out.println("000000");
+		method.invoke(proxy,args);
+		return null;
+	}
 }

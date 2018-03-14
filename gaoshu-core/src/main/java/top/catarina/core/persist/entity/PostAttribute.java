@@ -41,8 +41,4 @@ public class PostAttribute implements Serializable{
 	@OrderBy("created asc")
 	private List<Comment> comments;
 
-	@OneToMany
-	@JoinColumn(name = "pid")
-	private List<Attach> attaches;
-
 }

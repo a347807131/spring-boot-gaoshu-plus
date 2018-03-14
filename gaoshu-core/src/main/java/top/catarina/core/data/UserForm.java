@@ -10,7 +10,6 @@ package top.catarina.core.data;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
-import top.catarina.core.persist.entity.College;
 
 import java.io.Serializable;
 

@@ -1,5 +1,7 @@
 package top.catarina.web.controller.api.wechat;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -9,10 +11,7 @@ import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import top.catarina.base.context.AppContext;
 import top.catarina.base.lang.Consts;
 import top.catarina.core.persist.entity.User;
@@ -27,7 +26,8 @@ import java.util.Date;
  * oauth第三方回调
  */
 @Slf4j
-@Controller
+@Api("微信认证回调接口")
+@RestController
 @RequestMapping(Consts.MP_OAUTH_CALLBACK_URI)
 public class CallbackController {
 
@@ -41,7 +41,7 @@ public class CallbackController {
 	/**
 	 * 供前端获取微信auth认证的链接地址
 	 */
-	@ResponseBody
+	@ApiOperation("前端获取微信认证链接的接口")
 	@GetMapping("url")
 	public String authUrl(){
 		return appContext.getConfig().get("authUrl");
@@ -51,7 +51,7 @@ public class CallbackController {
 	 * 回调接口
 	 * @param code 用于换取access_token的凭证
 	 */
-	@ResponseBody
+	@ApiOperation("认证回调接口")
 	@GetMapping
 	public User callback(@RequestParam String code,
 	                     HttpSession session,
@@ -67,15 +67,15 @@ public class CallbackController {
 			BeanUtils.copyProperties(mpUser,user);
 			userService.add(user);
 		}
-		/*
+		/* 过时
 		 * 因为hibernate的实际思想，
 		 * 所以sessin(request)中不能直接存方受sessionhibernate管控的实体类
 		 * 解决方案，new 一个不受管控的实体类，并将信息复制
 		 */
-		User userInSession = new User();
-		BeanUtils.copyProperties(user,userInSession);
+		/*User userInSession = new User();
+		BeanUtils.copyProperties(user,userInSession);*/
 		//保存相关信息到session cookie中
-		login(session, response, userInSession);
+		login(session, response, user);
 		return user;
 	}
 

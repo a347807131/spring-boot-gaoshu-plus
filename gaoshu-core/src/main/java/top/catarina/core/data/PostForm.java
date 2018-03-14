@@ -11,7 +11,6 @@ package top.catarina.core.data;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
-import top.catarina.core.persist.entity.User;
 
 import java.io.Serializable;
 
@@ -23,8 +22,6 @@ import java.io.Serializable;
 @Data
 public class PostForm implements Serializable{
 
-	@NotBlank
-	@JsonProperty("pid")
 	private long id;
 
 	@NotBlank
@@ -37,13 +34,10 @@ public class PostForm implements Serializable{
 
 	private int reward;
 
-	@NotBlank
 	private String tag;
 
 	@NotBlank
 	private String content;
-
-	private User author;
 
 	//extend
 	//素材

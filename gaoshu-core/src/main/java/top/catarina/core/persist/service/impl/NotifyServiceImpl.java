@@ -14,7 +14,10 @@ import org.springframework.util.Assert;
 import top.catarina.base.lang.Enums;
 import top.catarina.core.persist.dao.NotifyDao;
 import top.catarina.core.persist.entity.Notify;
+import top.catarina.core.persist.entity.Post;
 import top.catarina.core.persist.service.NotifyService;
+import top.catarina.core.persist.service.PostService;
+import top.catarina.core.persist.service.UserService;
 
 import java.util.List;
 
@@ -28,6 +31,10 @@ public class NotifyServiceImpl implements NotifyService {
 
 	@Autowired
 	NotifyDao notifyDao;
+	@Autowired
+	UserService userService;
+	@Autowired
+	PostService postService;
 
 	@Override
 	public List<Notify> findByOwnId(long ownId) {
@@ -44,6 +51,17 @@ public class NotifyServiceImpl implements NotifyService {
 	}
 
 	@Override
+	public long send(long uid, long pid) throws Exception {
+		Notify notify = new Notify();
+		notify.setFromId(uid);
+		notify.setEvent(Enums.EnumLog.REPLY.ordinal());
+		notify.setPostId(pid);
+		long ownId = postService.getPost(pid).getAuthor().getId();
+		notify.setOwnId(ownId);
+		return send(notify);
+	}
+
+	@Override
 	public int unread4Me(long ownId) {
 		return notifyDao.countByOwnId(ownId);
 	}
@@ -51,7 +69,7 @@ public class NotifyServiceImpl implements NotifyService {
 	@Override
 	public void readed4Me(long ownId) {
 		List<Notify> list = notifyDao.findByOwnId(ownId);
-		for (Notify notify:list) {
+		for (Notify notify : list) {
 			notify.setStatus(Enums.StatusNotify.READED.getIndex());
 		}
 	}

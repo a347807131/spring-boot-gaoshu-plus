@@ -33,6 +33,8 @@ public interface NotifyService {
 	 */
 	long send(Notify notify) throws Exception;
 
+	long send(long uid,long pid) throws Exception;
+
 	/**
 	 * 未读消息数量
 	 *

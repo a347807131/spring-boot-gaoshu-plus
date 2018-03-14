@@ -8,9 +8,12 @@
 */
 package top.catarina;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import top.catarina.core.persist.entity.User;
+import top.catarina.core.persist.service.UserService;
 
 /**
  * @author Civin
@@ -20,8 +23,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/demo")
 public class DemoController {
+	@Autowired
+	UserService userService;
 	@GetMapping("1")
 	public String demo1(){
 		return "demo1";
+	}
+
+	/**
+	 * 获取一个user
+	 */
+	@GetMapping("2")
+	public User demo2(){
+		return userService.get(1);
 	}
 }

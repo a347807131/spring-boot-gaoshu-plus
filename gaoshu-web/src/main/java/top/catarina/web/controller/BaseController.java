@@ -75,7 +75,7 @@ public abstract class BaseController {
 		if (maxResults == null || maxResults == 0) {
 			maxResults = 10;
 		}
-		return new PageRequest(pn - 1, maxResults, sort);
+		return new PageRequest(pn, maxResults, sort);
 	}
 
 	protected String getSuffix(String name) {

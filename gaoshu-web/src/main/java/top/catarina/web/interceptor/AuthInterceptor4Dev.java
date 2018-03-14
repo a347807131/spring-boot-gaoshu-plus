@@ -42,7 +42,7 @@ public class AuthInterceptor4Dev extends HandlerInterceptorAdapter {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		// 是否需要拦截
+		/*// 是否需要拦截
 		String sessionId = null;
 		// 是否有cookie
 		Cookie[] cookies = request.getCookies();
@@ -65,7 +65,7 @@ public class AuthInterceptor4Dev extends HandlerInterceptorAdapter {
 			response.sendRedirect("http://www.baidu.com");
 			//转发到登陆页面
 			return false;
-		}
+		}*/
 		return true;
 	}
 

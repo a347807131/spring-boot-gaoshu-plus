@@ -17,6 +17,7 @@
 package top.catarina.config;
 
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -37,10 +38,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 
+    @Value("${app.swagger.enable}")
+    private boolean enable;
+
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-            .apiInfo(apiInfo())
+            .apiInfo(apiInfo()).enable(enable)
             .select()
             //加了ApiOperation注解的类，生成接口文档
             .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))

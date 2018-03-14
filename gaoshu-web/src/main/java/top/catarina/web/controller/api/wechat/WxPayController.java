@@ -12,12 +12,15 @@ import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import top.catarina.base.context.AppContext;
 import top.catarina.base.lang.Consts;
+import top.catarina.base.utils.R;
 import top.catarina.core.annotation.CurrentUser;
 import top.catarina.core.persist.entity.Order;
 import top.catarina.core.persist.entity.User;
@@ -35,6 +38,7 @@ import static top.catarina.base.utils.IPUtils.getIpAddr;
  * @email Civin@bupt.edu.cn
  * @date 2018-03-06 19:15
  */
+@Api("微信支付相关控制器.")
 @RestController
 @RequestMapping(Consts.PAY_PORTAL_URI)
 public class WxPayController {
@@ -56,7 +60,8 @@ public class WxPayController {
 	 * @return 传给器器前端的参数
 	 * @throws WxPayException 微信支付异常
 	 */
-	@RequestMapping(params = "method=recharge")
+	@ApiOperation("创建微信预支付与本地服务器订单订单的接口")
+	@GetMapping(params = "method=recharge")
 	public Object createOrder(@CurrentUser User user,
 	                          @RequestParam("golds") int golds,
 	                          HttpServletRequest request) throws Exception {
@@ -75,13 +80,14 @@ public class WxPayController {
 		return wxPayService.createOrder(orderRequest);
 	}
 
+	@ApiOperation("用户提现接口")
 	@GetMapping(params = "method=withdraw")
 	public Object withDraw(@CurrentUser User user,
 	                       @RequestParam("golds") int golds,
 	                       HttpServletRequest request) {
 		userService.changeGolds(user.getId(),golds);
 
-		return null;
+		return R.ok();
 	}
 
 	/**
@@ -90,6 +96,7 @@ public class WxPayController {
 	 * @return 成功处理的xml消息
 	 * @throws WxPayException 微信支付异常
 	 */
+	@ApiOperation("支付成功后微信服务器异步通知接口。")
 	@RequestMapping("notify")
 	public String notifies(@RequestBody InputStream inputStream) throws WxPayException {
 		String resposeBody = inputStream.toString();

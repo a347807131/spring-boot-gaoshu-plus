@@ -12,11 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import top.catarina.base.lang.Consts;
-import top.catarina.base.lang.Enums.*;
+import top.catarina.base.lang.Enums.StatusUser;
 import top.catarina.core.persist.dao.UserDao;
+import top.catarina.core.persist.entity.College;
 import top.catarina.core.persist.entity.User;
+import top.catarina.core.persist.service.CollegeService;
 import top.catarina.core.persist.service.UserService;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -29,6 +33,8 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserDao userDao;
+	@Autowired
+	CollegeService collegeService;
 	@Override
 	public User get(long id) {
 		return userDao.getOne(id);
@@ -76,5 +82,24 @@ public class UserServiceImpl implements UserService {
 		Assert.isTrue(po.getGolds()>=golds);
 		po.setGolds(po.getPosts()-golds);
 		return po.getGolds();
+	}
+
+	@Override
+	public void changeSingleAttr(String attr, Object value,long uid) throws Exception {
+		User user = userDao.getOne(uid);
+		Assert.notNull(user);
+		if(!"collegeName".equals(attr)) {
+			Class<User> clazz = User.class;
+			Field field = clazz.getDeclaredField(attr);
+			Class<?> type = field.getType();
+			String methodName = "set" + String.valueOf(attr.charAt(0)).toUpperCase() + attr.substring(1);
+			Method method = clazz.getMethod(methodName, type);
+			method.invoke(user, type.cast(value));
+			userDao.save(user);
+			return;
+		}
+		College college = collegeService.get(String.valueOf(value));
+		Assert.notNull(college);
+		user.setCollege(college);
 	}
 }

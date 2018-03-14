@@ -10,6 +10,7 @@ package top.catarina.core.persist.service;
 
 import top.catarina.core.persist.entity.User;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -61,5 +62,7 @@ public interface UserService {
 	 * 更改金币数量
 	 */
 	int changeGolds(long userId,int gold);
+
+	void changeSingleAttr(String attr,Object value,long uid) throws Exception;
 
 }

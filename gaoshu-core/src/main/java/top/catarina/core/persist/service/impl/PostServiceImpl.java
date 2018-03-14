@@ -15,11 +15,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import top.catarina.base.lang.Consts;
 import top.catarina.base.lang.Enums;
+import top.catarina.core.persist.dao.AttachDao;
 import top.catarina.core.persist.dao.PostAttributeDao;
 import top.catarina.core.persist.dao.PostDao;
+import top.catarina.core.persist.entity.Notify;
 import top.catarina.core.persist.entity.Post;
 import top.catarina.core.persist.entity.PostAttribute;
+import top.catarina.core.persist.service.NotifyService;
 import top.catarina.core.persist.service.PostService;
+import top.catarina.core.persist.service.UserService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Civin
@@ -33,11 +40,21 @@ public class PostServiceImpl implements PostService {
 	PostDao postDao;
 	@Autowired
 	PostAttributeDao attributeDao;
+	@Autowired
+	AttachDao attachDao;
+	@Autowired
+	UserService userService;
+	@Autowired
+	NotifyService notifyService;
 
 	@Override
 	public long post(PostAttribute post) {
 		Assert.notNull(post);
+		attachDao.save(post.getPost().getAttaches());
+		userService.identityPosts(post.getPost().getAuthor().getId());
+
 		return attributeDao.save(post).getId();
+
 	}
 
 	@Override
@@ -47,7 +64,7 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public Post getPost(long id) {
-		return null;
+		return postDao.getOne(id);
 	}
 
 	/**
@@ -111,6 +128,18 @@ public class PostServiceImpl implements PostService {
 	public Page<Post> paging(Pageable pageable) {
 		return postDao.findAll(pageable);
 	}
+
+	@Override
+	public List<Post> pagingUnread(long uid) {
+		List<Notify> notifies = notifyService.findByOwnId(uid);
+		notifyService.readed4Me(uid);
+		ArrayList<Long> pids = new ArrayList<>();
+		notifies.forEach(po->{
+			pids.add(po.getPostId());
+		});
+		return postDao.findAll(pids);
+	}
+
 
 	@Override
 	public Page<Post> pagingByAuthorId(Pageable pageable, long userId, int privacy) {

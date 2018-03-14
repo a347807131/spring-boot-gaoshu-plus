@@ -1,10 +1,28 @@
+#项目相关配置
+app:
+    #文件储存目录
+    store.root:
+    domain:
+    swagger.enable: false
+#微信开发相关配置
+wechat:
+    mp:
+        appId:
+        secret:
+        token:
+        #aesKey:
+    pay:
+        mchId: ..
+        mchKey: ..
+        keyPath: ..
+
 #数据库设置
 spring:
 #JavaMailSender 邮件发送的配置
     mail:
-        host: smtp.qq.com
-        username: 947124233@qq.com
-        password: h5767356q
+        host:
+        username:
+        password:
         properties:
             mail.smtp:
                 auth: true
@@ -15,12 +33,14 @@ spring:
         database: MYSQL
         show-sql: true
         hibernate.ddl-auto: update
-        properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
-        
+        properties.hibernate:
+            enable_lazy_load_no_trans: true
+            dialect: org.hibernate.dialect.MySQL5Dialect
+
     #数据源设置
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
-        url: jdbc:mysql://localhost:3306/db_gaoshu_plus?allowMultiQueries=true&userSSL=false&useUnicode=true&characterEncoding=UTF-8
+        url: jdbc:mysql://localhost:3306/db_gaoshu_plus?allowMultiQueries=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8
         driver-class-name: com.mysql.jdbc.Driver
         username: root
         password: admin

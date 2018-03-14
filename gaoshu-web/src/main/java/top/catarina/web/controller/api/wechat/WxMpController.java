@@ -1,5 +1,7 @@
 package top.catarina.web.controller.api.wechat;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
@@ -14,6 +16,7 @@ import top.catarina.base.lang.Consts;
 /**
  * @author Binary Wang(https://github.com/binarywang)
  */
+@Api("微信公众号开发模式的相关控制器.")
 @RestController
 @RequestMapping(Consts.MP_PORTAL_URI)
 public class WxMpController {
@@ -25,6 +28,7 @@ public class WxMpController {
 	@Autowired
 	private WxMpMessageRouter router;
 
+	@ApiOperation("设置入口时需要的验证接口。")
 	@GetMapping(produces = "text/plain;charset=utf-8")
 	public String authGet(
 			@RequestParam(name = "signature",
@@ -48,6 +52,7 @@ public class WxMpController {
 		return "非法请求";
 	}
 
+	@ApiOperation("项目服务器与微信服务器进行通信的接口.")
 	@PostMapping(produces = "application/xml; charset=UTF-8")
 	public String post(@RequestBody String requestBody,
 	                   @RequestParam("signature") String signature,

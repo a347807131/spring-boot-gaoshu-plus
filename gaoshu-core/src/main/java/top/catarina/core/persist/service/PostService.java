@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import top.catarina.core.persist.entity.Post;
 import top.catarina.core.persist.entity.PostAttribute;
 
+import java.util.List;
+
 /**
  * @author Civin
  * 邮箱：   Civin@bupt.edu.cn
@@ -92,6 +94,11 @@ public interface PostService {
 	 * 分页查询所有文章
 	 */
 	Page<Post> paging(Pageable pageable);
+
+	/**
+	 * 查询自己未处理的信心
+	 */
+	List<Post> pagingUnread(long uid);
 
 	/**
 	 * 查询个人发布文章

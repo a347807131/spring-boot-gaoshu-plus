@@ -1,19 +1,21 @@
 package top.catarina.web.controller;
 
-import org.apache.commons.lang.StringUtils;
+import io.swagger.annotations.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
-import top.catarina.base.lang.Consts;
 import top.catarina.base.utils.R;
 import top.catarina.core.annotation.CurrentUser;
 import top.catarina.core.data.CommentForm;
-import top.catarina.core.persist.entity.*;
+import top.catarina.core.persist.entity.Attach;
+import top.catarina.core.persist.entity.Comment;
+import top.catarina.core.persist.entity.Notify;
+import top.catarina.core.persist.entity.User;
 import top.catarina.core.persist.service.CommentService;
+import top.catarina.core.persist.service.NotifyService;
 import top.catarina.core.persist.service.PostService;
 import top.catarina.core.validator.ValidatorUtils;
 
@@ -23,6 +25,7 @@ import java.util.List;
  * @author Civin
  * @create 2018-01-25 19:08
  */
+@Api("评论回复的相关控制器")
 @RestController
 @RequestMapping("/comment")
 public class CommentController extends BaseController {
@@ -31,6 +34,8 @@ public class CommentController extends BaseController {
 	PostService postService;
 	@Autowired
 	CommentService commentService;
+	@Autowired
+	NotifyService notifyService;
 
 	/**
 	 * 分页查询回复
@@ -39,6 +44,12 @@ public class CommentController extends BaseController {
 	 * @param toId 所属post的id
 	 * @return 包装了Comment的page
 	 */
+	@ApiOperation(value = "回复查询接口.", notes = "前端根据用户的id查询回复." +
+			"默认查询第一页.", response = Page.class)
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "pn", value = "页码"),
+			@ApiImplicitParam(name = "toId", value = "用户id", required = true)
+	})
 	@GetMapping("/list")
 	public Page<Comment> view(Integer pn, @RequestParam long toId) {
 		Sort sort = new Sort(Sort.Direction.ASC, "sort");
@@ -50,42 +61,36 @@ public class CommentController extends BaseController {
 	/**
 	 * 提交评论
 	 *
-	 * @param user    当前操作用户
+	 * @param user 当前操作用户
 	 */
+	@ApiOperation("发布回复接口")
+	@ApiParam(name = "form",required = true)
 	@PostMapping
 	public R post(@RequestBody CommentForm form,
 	              @CurrentUser User user) throws Exception {
 		ValidatorUtils.validateEntity(form);
-		form.setAuthor(user);
+		//form.setAuthor(user);
 		Comment comment = new Comment();
 		BeanUtils.copyProperties(form, comment);
+		comment.setAuthor(user);
 		commentService.post(comment, form.getPid());
 		List<Attach> attaches = handleAblums(form.getMids());
 		comment.setAttachs(attaches);
 
-		//发送通知
-		//if (postService.get(form.getPid()).getAuthor().getId() != user.getId())
-		//sendNotify();
+		notifyService.send(user.getId(),form.getPid());
 		return R.ok();
 	}
 
+	@ApiOperation(value = "删除评论接口", notes = "根据回复的id进行删除该评论")
+	@ApiImplicitParam(name = "id", required = true,value = "评论id")
 	@DeleteMapping
-	public R delete(@RequestParam(name = "cid") Long id, @CurrentUser User user) {
+	public R delete(@RequestParam(name = "id") Long id, @CurrentUser User user) {
 		if (id != null) {
 			commentService.delete(id, user.getId());
 			return R.ok();
 		}
 		return R.error();
 	}
-/*
-	private void sendNotify(long userId,long postId){
-		NotifyEvent event = new NotifyEvent("NotifyEvent");
-		event.setFromUserId(userId);
-		event.setEvent(Consts.NOTIFY_EVENT_C
-		OMMENT);
-		// 此处不知道文章作者, 让通知事件系统补全
-		event.setPostId(postId);
-	}*/
 
 	//不存在更新这么一说
 

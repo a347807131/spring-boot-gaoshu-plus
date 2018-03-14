@@ -23,6 +23,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Civin
@@ -95,4 +96,7 @@ public class Post extends BaseEntity {
 	@JoinColumn(name = "author_id")
 	private User author;
 
+	@OneToMany
+	@JoinColumn(name = "pid")
+	private List<Attach> attaches;
 }

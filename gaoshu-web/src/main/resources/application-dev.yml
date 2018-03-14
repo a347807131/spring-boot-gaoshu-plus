@@ -3,11 +3,12 @@ app:
     #文件储存目录
     store.root:
     domain: catarina.ngrok.xiaomiqiu.cn
+    swagger.enable: true
 #微信开发相关配置
 wechat:
     mp:
-        appId: wx667ce3fb69526d7e
-        secret: 09ef940002f7125cefc37aee212c3271
+        appId: ***
+        secret: ***
         token: token
         #aesKey:
     pay:
@@ -20,8 +21,8 @@ spring:
 #JavaMailSender 邮件发送的配置
     mail:
         host: smtp.qq.com
-        username: 947124233@qq.com
-        password: h5767356q
+        username: ***
+        password: ***
         properties:
             mail.smtp:
                 auth: true
