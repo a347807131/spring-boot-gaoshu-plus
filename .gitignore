@@ -31,3 +31,25 @@ application-dev.yml
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
+/data/
+gaoshu-base/src/main/resources/
+gaoshu-base/src/test/
+gaoshu-base/target/generated-sources/
+gaoshu-core/src/main/resources/
+gaoshu-core/target/generated-sources/
+gaoshu-core/target/generated-test-sources/
+gaoshu-core/target/test-classes/application-pro.yml
+gaoshu-core/target/test-classes/application.yml
+gaoshu-core/target/test-classes/dragen.gif
+gaoshu-core/target/test-classes/logback-spring.xml
+gaoshu-web/target/classes/application-pro.yml
+gaoshu-web/target/classes/application.yml
+gaoshu-web/target/classes/dragen.gif
+gaoshu-web/target/classes/logback-spring.xml
+gaoshu-web/target/classes/static/
+gaoshu-web/target/generated-sources/
+gaoshu-web/target/generated-test-sources/
+gaoshu-wx/src/main/resources/
+gaoshu-wx/src/test/resources/
+gaoshu-wx/target/generated-sources/
+gaoshu-wx/target/generated-test-sources/

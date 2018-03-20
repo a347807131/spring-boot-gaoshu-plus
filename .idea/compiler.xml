@@ -18,6 +18,7 @@
       <module name="gaoshu-core" target="1.8" />
       <module name="gaoshu-web" target="1.8" />
       <module name="gaoshu-wx" target="1.8" />
+      <module name="gaoshuadmin" target="1.8" />
       <module name="spring-boot-gaoshu-plus" target="1.8" />
     </bytecodeTargetLevel>
   </component>
