@@ -28,7 +28,7 @@ public class Attach implements Serializable{
 	/**
 	 * 该素材在微信服务器上临时的id
 	 */
-	@Column(name = "m_id")
+	@Column(name = "mid")
 	private String mId;
 
 	/**

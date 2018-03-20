@@ -45,8 +45,8 @@ public class User extends BaseEntity{
 	/**
 	 * 是否关注
 	 */
-	@Column( columnDefinition = "tinyint(0) default 1")
-	private boolean subscribe;
+	@Column( columnDefinition = "tinyint default 1")
+	private Boolean subscribe;
 
 	/**昵稱*/
 	@Column(name = "nickname",length = 64)

@@ -42,6 +42,9 @@ public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentR
 		if(user!=null){
 			return user;
 		}
-		throw new MissingServletRequestPartException("currentUser");
+		user= userService.get(1);
+		nativeWebRequest.setAttribute(Consts.USER_ID,user,RequestAttributes.SCOPE_SESSION);
+		return user;
+		//throw new MissingServletRequestPartException("currentUser");
 	}
 }

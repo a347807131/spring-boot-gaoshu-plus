@@ -26,7 +26,7 @@ public interface OrderService {
 	/**
 	 * 保存
 	 * @param order 订单data类
-	 * @return 主键
+	 * @return uuid
 	 */
 	long create(Order order);
 

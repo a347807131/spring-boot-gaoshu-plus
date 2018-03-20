@@ -67,6 +67,7 @@ public class CommentServiceImpl implements CommentService {
 	public long post(Comment comment, long pid) {
 		Assert.notNull(comment);
 		PostAttribute post = postService.get(pid);
+
 		Assert.notNull(post, "不存在相关推送。");
 		commentDao.save(comment);
 		List<Comment> comments = post.getComments();

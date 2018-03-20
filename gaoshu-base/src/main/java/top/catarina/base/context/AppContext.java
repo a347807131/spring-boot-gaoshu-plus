@@ -24,6 +24,8 @@ import java.util.Map;
 @Component
 public class AppContext {
 
+
+
 	/**
 	 * 网站地址
 	 */

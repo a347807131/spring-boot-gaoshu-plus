@@ -22,14 +22,15 @@ import org.springframework.web.bind.annotation.RestController;
  * 邮箱：   Civin@bupt.edu.cn
  * @since 2018-03-14 16:22
  */
-@RequestMapping("/api/wechat/sdk/signture")
+@RequestMapping("/api/wechat/sdk")
 @RestController
-public class WxSdkSigntureController {
+public class WxSdkController {
 
 	@Autowired
 	WxMpService mpService;
+
 	@ApiOperation(value = "微信sdk配置信息获取接口.",notes = "需要传入调用该接口的页面的url。")
-	@GetMapping
+	@GetMapping(value = "signture")
 	public WxJsapiSignature config(String url) throws WxErrorException {
 		return mpService.createJsapiSignature(url);
 	}

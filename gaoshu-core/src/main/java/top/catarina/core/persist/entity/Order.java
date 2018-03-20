@@ -10,6 +10,7 @@ package top.catarina.core.persist.entity;
 
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -31,19 +32,22 @@ public class Order implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private long outTradeNo;
+	private long id;
+
+	private String outTradeNo= String.valueOf(new Date().getTime());
 
 	/**
 	 * 所属用户openId
 	 */
-	@Column(name = "openid", length = 32, unique = true,nullable = false)
-	private String openId;
+	@Column(name = "openid", length = 32,nullable = false)
+	private String openid;
+
 	private int status;
 
 	/**
 	 * 商品描述
 	 */
-	@Column(length =64)
+	@Column(length = 64,nullable = false)
 	private String body;
 
 	/**
@@ -51,6 +55,12 @@ public class Order implements Serializable{
 	 */
 	@Column(nullable = false)
 	private int totalFee;
+
+	/**
+	 * 交易类型
+	 */
+	@Column(length = 8,nullable = false)
+	private String tradeType;
 
 	/**
 	 * 交易起始时间
@@ -65,7 +75,9 @@ public class Order implements Serializable{
 	@Temporal(value = TemporalType.TIMESTAMP)
 	@UpdateTimestamp
 	private Date timeExpire;
-
+	/**
+	 * 发起账单的设备ip地址
+	 */
 	@Column(name = "spbill_create_ip",nullable = false)
 	private String spbillCreateIp;
 }

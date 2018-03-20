@@ -2,6 +2,7 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gaoshu-admin" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gaoshu-base" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gaoshu-core" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gaoshu-web" charset="UTF-8" />

@@ -25,7 +25,6 @@ public class WxPayProperties {
 	/**
 	 * 设置微信公众号的appid
 	 */
-	@Value("${wechat.mp.appId}")
 	private String appId;
 
 	/**

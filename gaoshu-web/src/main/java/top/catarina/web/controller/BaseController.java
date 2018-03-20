@@ -8,18 +8,17 @@
 */
 package top.catarina.web.controller;
 
-import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpMaterialService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.util.Assert;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import top.catarina.base.context.AppContext;
 import top.catarina.base.upload.FileRepo;
 import top.catarina.core.persist.entity.Attach;
-import top.catarina.core.persist.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -83,7 +82,11 @@ public abstract class BaseController {
 		return name.substring(pos);
 	}
 
-	protected String getIpAddr(HttpServletRequest request) throws Exception {
+	protected String getIpAddr() throws Exception {
+		return getIpAddr(getRequest());
+	}
+
+		protected String getIpAddr(HttpServletRequest request) throws Exception {
 		String ip = request.getHeader("X-Real-IP");
 		if (!StringUtils.isBlank(ip) && !"unknown".equalsIgnoreCase(ip)) {
 			return ip;
@@ -100,6 +103,13 @@ public abstract class BaseController {
 		} else {
 			return request.getRemoteAddr();
 		}
+	}
+
+	/**
+	 * 获得当前request
+	 */
+	protected HttpServletRequest getRequest(){
+		return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 	}
 
 	/**

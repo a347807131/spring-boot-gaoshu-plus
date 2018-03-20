@@ -93,7 +93,7 @@ public class Post extends BaseEntity {
 	 * 作者
 	 */
 	@ManyToOne
-	@JoinColumn(name = "author_id")
+	@JoinColumn(name = "uid")
 	private User author;
 
 	@OneToMany

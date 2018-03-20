@@ -8,7 +8,6 @@
 */
 package top.catarina.core.persist.dao;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import top.catarina.core.persist.entity.Order;
 

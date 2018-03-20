@@ -9,18 +9,20 @@
 package top.catarina.web.controller.api.wechat;
 
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
+import com.github.binarywang.wxpay.bean.request.WxEntPayRequest;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
+import com.github.binarywang.wxpay.bean.result.WxEntPayResult;
+import com.github.binarywang.wxpay.bean.result.WxPayBaseResult;
+import com.github.binarywang.wxpay.constant.WxPayConstants;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import top.catarina.base.context.AppContext;
 import top.catarina.base.lang.Consts;
-import top.catarina.base.utils.R;
 import top.catarina.core.annotation.CurrentUser;
 import top.catarina.core.persist.entity.Order;
 import top.catarina.core.persist.entity.User;
@@ -29,9 +31,9 @@ import top.catarina.core.persist.service.UserService;
 import top.catarina.web.controller.BaseController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
-
-import static top.catarina.base.utils.IPUtils.getIpAddr;
+import java.util.Date;
 
 /**
  * @author Civin
@@ -41,7 +43,7 @@ import static top.catarina.base.utils.IPUtils.getIpAddr;
 @Api("微信支付相关控制器.")
 @RestController
 @RequestMapping(Consts.PAY_PORTAL_URI)
-public class WxPayController {
+public class WxPayController extends BaseController {
 
 	@Autowired
 	WxPayService wxPayService;
@@ -55,7 +57,6 @@ public class WxPayController {
 	/**
 	 * 暂时只设置必要参数，后续根据需求添加参数
 	 *
-	 * @param user  当前用户
 	 * @param golds 金额
 	 * @return 传给器器前端的参数
 	 * @throws WxPayException 微信支付异常
@@ -64,30 +65,55 @@ public class WxPayController {
 	@GetMapping(params = "method=recharge")
 	public Object createOrder(@CurrentUser User user,
 	                          @RequestParam("golds") int golds,
-	                          HttpServletRequest request) throws Exception {
+	                          HttpServletResponse response) throws Exception {
+
 
 		Order order = new Order();
-		order.setOpenId(user.getOpenId());
+		order.setOpenid(user.getOpenId());
 		order.setTotalFee(golds * 10);
-		order.setSpbillCreateIp(getIpAddr(request));
-		long orderId = orderService.create(order);
+		order.setSpbillCreateIp(getIpAddr());
+		order.setBody("金币充值");
+		order.setTradeType(WxPayConstants.TradeType.JSAPI);
+		long outTradeNo = orderService.create(order);
 
 		WxPayUnifiedOrderRequest orderRequest = new WxPayUnifiedOrderRequest();
-		BeanUtils.copyProperties(orderService.get(orderId), orderRequest);
+		BeanUtils.copyProperties(orderService.get(outTradeNo), orderRequest);
 
 		//设置付快后微信给商家的后台通知
 		orderRequest.setNotifyURL(appContext.getConfig().get("notifyUrl"));
+
 		return wxPayService.createOrder(orderRequest);
 	}
 
+	/**
+	 * 发放红包接口，发放需要审核
+	 * @param golds 数量、必须为12的倍数
+	 * @return jssdk调用需要的参数
+	 */
 	@ApiOperation("用户提现接口")
 	@GetMapping(params = "method=withdraw")
 	public Object withDraw(@CurrentUser User user,
 	                       @RequestParam("golds") int golds,
-	                       HttpServletRequest request) {
-		userService.changeGolds(user.getId(),golds);
+	                       HttpServletRequest request) throws Exception {
 
-		return R.ok();
+		int money= (int) (golds*Consts.RATE_TO_RMB);
+
+		WxEntPayRequest entPayRequest = new WxEntPayRequest();
+		entPayRequest.setAmount(money);
+		entPayRequest.setSpbillCreateIp(getIpAddr());
+		entPayRequest.setOpenid(user.getOpenId());
+		//不校验微信用户真实姓名
+		entPayRequest.setCheckName(WxPayConstants.CheckNameOption.NO_CHECK);
+		//
+		entPayRequest.setDescription("提现.");
+
+
+		WxEntPayResult result = wxPayService.entPay(entPayRequest);
+
+		userService.changeGolds(user.getId(),-golds);
+
+		//开发阶段返回的完成企业支付的结果
+		return result;
 	}
 
 	/**
@@ -100,8 +126,13 @@ public class WxPayController {
 	@RequestMapping("notify")
 	public String notifies(@RequestBody InputStream inputStream) throws WxPayException {
 		String resposeBody = inputStream.toString();
-		WxPayOrderNotifyResult notifyResult = wxPayService.parseOrderNotifyResult(resposeBody);
-		orderService.complete(Long.parseLong(notifyResult.getOutTradeNo()));
+		WxPayOrderNotifyResult result = wxPayService.parseOrderNotifyResult(resposeBody);
+		// 结果正确
+		String orderId = result.getOutTradeNo();
+		String tradeNo = result.getTransactionId();
+		String totalFee = WxPayBaseResult.feeToYuan(result.getTotalFee());
+		//自己处理订单的业务逻辑，需要判断订单是否已经支付过，否则可能会重复调用
+		orderService.complete(Long.parseLong(result.getOutTradeNo()));
 
 		return "<xml>\n" +
 				"  <return_code><![CDATA[SUCCESS]]></return_code>\n" +

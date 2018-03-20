@@ -46,6 +46,18 @@ public interface Consts {
 	String PAY_PORTAL_URI="/api/wechat/pay";
 
 	String PAY_NOTIFY_CALLBACK_URI=PAY_PORTAL_URI+"/notify";
+	/**
+	 * 人民币与金币汇率  单位 分-个
+	 */
+	double RATE_TO_RMB=8.33;//分per gold
+	/**
+	 * 人民币与金币汇率  单位 分-个
+	 */
+	double RETE_TO_GOLD=0.1;//个 per 分
+
+
+
+
 
 
 }

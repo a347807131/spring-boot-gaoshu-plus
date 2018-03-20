@@ -24,7 +24,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "tb_post_attribute")
-public class PostAttribute implements Serializable{
+public class PostAttribute extends BaseEntity{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +35,7 @@ public class PostAttribute implements Serializable{
 	private Post post;
 
 	//cascade没有写，即是默认值，就是不级联的意思。
-	@OneToMany
+	@OneToMany(cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "pid")
 	//排序 按转出在哪创建时间升序排列
 	@OrderBy("created asc")
