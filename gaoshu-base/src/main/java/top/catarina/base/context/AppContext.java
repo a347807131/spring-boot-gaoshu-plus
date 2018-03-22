@@ -35,7 +35,7 @@ public class AppContext {
 	/*
 	 * 文件存储-根目录
 	 */
-	//@Value("#{'${app.store.root}'}")
+	@Value("${app.store.root}")
 	private String root = this.getClass().getClassLoader().getResource("").getPath();
 
 	/*

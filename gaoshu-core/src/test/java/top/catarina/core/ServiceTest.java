@@ -65,6 +65,7 @@ public class ServiceTest extends ApplicationTest {
 	 * 发布推送
 	 */
 	@Override
+	@Test
 	//@Transactional
 	public void test() throws Exception {
 		String path= Objects.requireNonNull(getClass().getClassLoader().getResource("dragen.gif")).getPath();

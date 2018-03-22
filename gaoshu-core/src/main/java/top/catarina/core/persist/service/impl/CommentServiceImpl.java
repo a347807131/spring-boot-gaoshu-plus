@@ -42,7 +42,7 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	public Page<Comment> paging(long ownId, Pageable pageable) {
-		return null;
+		return commentDao.findByAuthorId(ownId,pageable);
 	}
 
 	@Override

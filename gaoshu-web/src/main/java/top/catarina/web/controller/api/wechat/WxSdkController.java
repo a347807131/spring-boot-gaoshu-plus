@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Civin
  * 邮箱：   Civin@bupt.edu.cn
  * @since 2018-03-14 16:22
+ * 微信sdk配置信息获取接口
  */
 @RequestMapping("/api/wechat/sdk")
 @RestController
