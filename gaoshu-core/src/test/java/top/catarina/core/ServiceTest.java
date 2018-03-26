@@ -16,10 +16,7 @@ import top.catarina.base.context.AppContext;
 import top.catarina.base.upload.FileRepo;
 import top.catarina.base.utils.GenericsUtil;
 import top.catarina.core.persist.entity.*;
-import top.catarina.core.persist.service.CollegeService;
-import top.catarina.core.persist.service.CommentService;
-import top.catarina.core.persist.service.PostService;
-import top.catarina.core.persist.service.UserService;
+import top.catarina.core.persist.service.*;
 
 import javax.transaction.Transactional;
 import java.io.File;
@@ -48,6 +45,8 @@ public class ServiceTest extends ApplicationTest {
 	FileRepo fileRepo;
 	@Autowired
 	AppContext appContext;
+	@Autowired
+	NotifyService notifyService;
 
 	@Test
 	public void insertUser() {
@@ -134,6 +133,17 @@ public class ServiceTest extends ApplicationTest {
 
 			comment.setAttachs(attaches);
 			commentService.post(comment,i+1);
+		}
+	}
+
+	@Test
+	public void notifies() throws Exception {
+		for (int i = 0; i < 50; i++) {
+			Notify notify = new Notify();
+			notify.setFromId(1);
+			notify.setOwnId(1);
+			notify.setPostId(i+2);
+			notifyService.send(notify);
 		}
 	}
 }

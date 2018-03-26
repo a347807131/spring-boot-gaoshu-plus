@@ -29,6 +29,7 @@ import top.catarina.base.utils.HttpContextUtils;
 import top.catarina.base.utils.IPUtils;
 import top.catarina.core.annotation.Log;
 import top.catarina.core.persist.entity.SysLog;
+import top.catarina.core.persist.entity.User;
 import top.catarina.core.persist.service.SysLogService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -96,7 +97,7 @@ public class SysLogAspect {
 		sysLog.setIp(IPUtils.getIpAddr(request));
 
 		//用户名
-		long uid = (long) request.getAttribute(Consts.USER_ID);
+		long uid = ((User) request.getAttribute(Consts.USER_ID)).getId();
 
 		sysLog.setTime(time);
 		sysLog.setCreateDate(new Date());

@@ -16,7 +16,7 @@
         <module>gaoshu-wx</module>
     </modules>
 
-    <name>sprring-boot-gaoshu-plus</name>
+    <name>spring-boot-gaoshu-plus</name>
     <description>Demo project for Spring Boot</description>
 
     <parent>

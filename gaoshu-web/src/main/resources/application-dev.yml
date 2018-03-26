@@ -1,7 +1,7 @@
 #项目相关配置
 app:
     #文件储存目录
-    #store.root:
+    store.root: F:\gaoshu
     domain: gaoshu.yiqishuagaoshu.com
     swagger.enable: true
 #微信开发相关配置
@@ -29,15 +29,7 @@ server:
 
 #数据库设置
 spring:
-#JavaMailSender 邮件发送的配置
-    mail:
-        host: smtp.qq.com
-        username: 947124233@qq.com
-        password: h5767356q
-        properties.mail.smtp:
-                auth: true
-                starttls.enable: true
-                starttls.required: true
+
     #JPA Configuration:
     jpa:
         database: MYSQL
@@ -85,4 +77,4 @@ spring:
 #logging
 logging:
     level: debug
-    file: /spring.log
+    file: spring.log

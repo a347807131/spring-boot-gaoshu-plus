@@ -51,16 +51,23 @@ public class CommentController extends BaseController {
 			@ApiImplicitParam(name = "toId", value = "用户id", required = true)
 	})
 	@GetMapping("/list")
-	public Page<Comment> view(Integer pn, @RequestParam long toId) {
-		Sort sort = new Sort(Sort.Direction.ASC, "sort");
+	public Page<Comment> view(Integer pn, @RequestParam Long toId) {
+		Sort sort = new Sort(Sort.Direction.ASC, "created");
 		Pageable pageable = wrapPage(pn, sort);
-		Page<Comment> list = commentService.paging(toId, pageable);
-		return list;
+		return commentService.paging(toId, pageable);
 	}
+
+	@ApiOperation(value = "用户我的回答查询接口.", notes = "参数页码.")
+	@GetMapping("/mylist")
+	public Page<Comment> myview(Integer pn,@CurrentUser User user) {
+		Sort sort = new Sort(Sort.Direction.ASC, "created");
+		Pageable pageable = wrapPage(pn, sort);
+		return commentService.paging(user.getId(), pageable);
+	}
+
 
 	/**
 	 * 提交评论
-	 *
 	 * @param user 当前操作用户
 	 */
 	@ApiOperation("发布回复接口")
@@ -69,7 +76,9 @@ public class CommentController extends BaseController {
 	public R post(@RequestBody CommentForm form,
 	              @CurrentUser User user) throws Exception {
 		ValidatorUtils.validateEntity(form);
-		//form.setAuthor(user);
+		//防止前台恶意提交
+		form.setId(0);
+
 		Comment comment = new Comment();
 		BeanUtils.copyProperties(form, comment);
 		comment.setAuthor(user);

@@ -5,6 +5,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import top.catarina.base.lang.Enums;
 import top.catarina.base.upload.FileRepo;
@@ -57,8 +58,7 @@ public class PostController extends BaseController {
 	 * @return 实体类
 	 */
 	@ApiOperation(value = "未处理推送列表查询接口", response = List.class)
-	@ApiImplicitParam(name = "pn", defaultValue = "0")
-	@GetMapping(value = "/list",params = "method=unread")
+	@GetMapping(value = "/mylist",params = "method=unread")
 	public List<Post> listUnread(@CurrentUser User user) {
 		return postService.pagingUnread(user.getId());
 	}
@@ -86,10 +86,11 @@ public class PostController extends BaseController {
 	 * @return post的数据
 	 */
 	@ApiOperation(value = "推送详情查询接口", notes = "根据post的id进行查询")
-	@ApiImplicitParam(name = "id", defaultValue = "1",value = "推送id")
+	@ApiImplicitParam(name = "id",value = "推送的id")
 	@GetMapping
-	public PostAttribute detall(long id) {
-		postService.identityComments(id);
+	public PostAttribute detall(@RequestParam Long id) {
+
+		postService.identityViews(id);
 		return postService.get(id);
 	}
 
@@ -101,6 +102,7 @@ public class PostController extends BaseController {
 	@PutMapping
 	public R update(@RequestBody PostForm form,
 	                @CurrentUser User user) {
+
 		ValidatorUtils.validateEntity(form);
 		Post po = postService.getPost(form.getId());
 
@@ -125,6 +127,9 @@ public class PostController extends BaseController {
 	public R submit(@RequestBody PostForm form,
 	                @CurrentUser User user) throws Exception {
 
+		//必须判断form表单id属性为空，防止恶意提交
+		form.setId(0);
+
 		Post post = new Post();
 		PostAttribute postAttribute = new PostAttribute();
 		BeanUtils.copyProperties(form, post);
@@ -135,7 +140,8 @@ public class PostController extends BaseController {
 		post.setAttaches(attachs);
 		postService.post(postAttribute);
 		if (post.getReward() > 0)
-			userService.changeGolds(user.getId(), form.getReward());
+			//减少
+			userService.changeGolds(user.getId(), -form.getReward());
 		return R.ok();
 	}
 
@@ -158,15 +164,31 @@ public class PostController extends BaseController {
 		return R.ok();
 	}
 
-	@ApiOperation(value = "完结推送的接口", notes = "需要带上method=end参数，以便与获取详情接口区别开。")
-	@ApiImplicitParam(name = "id", required = true,value = "推送id")
-	@GetMapping(params = "method=end")
-	public R end(@RequestParam long id) {
-		Post vo = postService.getPost(id);
+	/**
+	 * 结题接口
+	 * @param pid 推送id
+	 * @param uid 方法悬赏的用户id
+	 */
+	@ApiOperation(value = "完结推送的接口")
+	@ApiImplicitParam(name = "pid", required = true,value = "推送id")
+	@GetMapping("end")
+	public R end(@RequestParam(name = "id") long pid,
+	             @RequestParam long uid,
+	             @CurrentUser User user) {
+
+		Post vo = postService.getPost(pid);
+
 		if (vo == null) {
-			return R.error("未查到对应的主题。");
+			return R.error("未查到对应的推送。");
 		}
-		postService.lock(id);
+		//必须为作者操作
+		Assert.isTrue(user.getId()==vo.getAuthor().getId());
+
+		postService.lock(pid);
+		//发放悬赏 增加
+		userService.changeGolds(uid,vo.getReward());
+		userService.indentityEarnedGolds(uid,vo.getReplys());
+
 		return R.ok();
 	}
 }

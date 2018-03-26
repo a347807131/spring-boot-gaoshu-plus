@@ -1,7 +1,6 @@
 package top.catarina.web.controller.api.wechat;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorController;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -19,24 +19,22 @@ import java.util.Map;
 /**
  * @author Binary Wang(https://github.com/binarywang)
  */
-/*@Controller*/
-public class WxErrorController /*implements ErrorController*/ {
-/*
-	private static final Logger logger = LoggerFactory
-			.getLogger(WxErrorController.class);
+@Slf4j
+//@Controller
+public class WxErrorController implements ErrorController {
 	private final static String ERROR_PATH = "/error";
 	private static WxErrorController appErrorController;
-	*//**
-	 * Error Attributes in the Application
-	 *//*
+	/**
+	 * Error Attributes io the Application
+	 */
 	@Autowired
 	private ErrorAttributes errorAttributes;
 
-	*//**
+	/**
 	 * Controller for the Error Controller
 	 *
 	 * @param errorAttributes
-	 *//*
+	 */
 
 	public WxErrorController(ErrorAttributes errorAttributes) {
 		this.errorAttributes = errorAttributes;
@@ -48,22 +46,22 @@ public class WxErrorController /*implements ErrorController*/ {
 		}
 	}
 
-	*//**
+	/**
 	 * Supports the HTML Error View
 	 *
 	 * @param request
-	 *//*
+	 */
 	@RequestMapping(value = ERROR_PATH, produces = "text/html")
 	public ModelAndView errorHtml(HttpServletRequest request) {
 		return new ModelAndView("error",
 				this.getErrorAttributes(request, false));
 	}
 
-	*//**
+	/**
 	 * Supports other formats like JSON, XML
 	 *
 	 * @param request
-	 *//*
+	 */
 	@RequestMapping(value = ERROR_PATH)
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> error(
@@ -95,10 +93,10 @@ public class WxErrorController /*implements ErrorController*/ {
 				request);
 		Map<String, Object> map = this.errorAttributes
 				.getErrorAttributes(requestAttributes, includeStackTrace);
-		logger.error("map is [{}]", map);
+		log.error("map is [{}]", map);
 		String url = request.getRequestURL().toString();
 		map.put("URL", url);
-		logger.error("[error info]: status-{}, request url-{}",
+		log.error("[error info]: status-{}, request url-{}",
 				map.get("status"), url);
 		return map;
 	}
@@ -112,6 +110,6 @@ public class WxErrorController /*implements ErrorController*/ {
 		}
 
 		return HttpStatus.INTERNAL_SERVER_ERROR;
-	}*/
+	}
 
 }

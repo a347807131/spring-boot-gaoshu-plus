@@ -35,6 +35,14 @@ public class UserServiceImpl implements UserService {
 	UserDao userDao;
 	@Autowired
 	CollegeService collegeService;
+
+	/**
+	 * 可供用户更改的属性
+	 */
+	private static final String[] attrs={
+			"collegeName","moblie","gender","email",
+			"nickname","headImgUrl","city","province",
+			"country"};
 	@Override
 	public User get(long id) {
 		return userDao.getOne(id);
@@ -79,13 +87,19 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int changeGolds(long userId, int golds) {
 		User po = userDao.getOne(userId);
-		Assert.isTrue(po.getGolds()>=golds);
-		po.setGolds(po.getPosts()-golds);
+		Assert.isTrue(po.getGolds()+golds>=0);
+		po.setGolds(po.getPosts()+golds);
 		return po.getGolds();
 	}
 
 	@Override
 	public void changeSingleAttr(String attr, Object value,long uid) throws Exception {
+
+		for (String attOri:attrs) {
+			if(attOri.equals(attOri))
+				break;
+			throw new RuntimeException("该属性不可被用户更改.");
+		}
 		User user = userDao.getOne(uid);
 		Assert.notNull(user);
 		if(!"collegeName".equals(attr)) {
@@ -101,5 +115,13 @@ public class UserServiceImpl implements UserService {
 		College college = collegeService.get(String.valueOf(value));
 		Assert.notNull(college);
 		user.setCollege(college);
+	}
+
+	@Override
+	public int indentityEarnedGolds(long uid, int golds) {
+		User po = userDao.getOne(uid);
+		Assert.isTrue(golds>=0);
+		po.setEarnedGolds(po.getEarnedGolds()+golds);
+		return po.getGolds();
 	}
 }

@@ -9,6 +9,7 @@
 package top.catarina.core.persist.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -21,6 +22,7 @@ import java.util.List;
  * 邮箱：   Civin@bupt.edu.cn
  * @since 2018-03-08 14:03
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "tb_post_attribute")

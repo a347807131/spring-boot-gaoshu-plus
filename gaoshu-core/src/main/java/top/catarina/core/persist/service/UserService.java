@@ -59,10 +59,12 @@ public interface UserService {
 	int identityPosts(long userId);
 
 	/**
-	 * 更改金币数量
+	 * 更改金币数量 gold符号的正负代表是充值还是提现
 	 */
 	int changeGolds(long userId,int gold);
 
 	void changeSingleAttr(String attr,Object value,long uid) throws Exception;
+
+	int indentityEarnedGolds(long uid,int golds);
 
 }

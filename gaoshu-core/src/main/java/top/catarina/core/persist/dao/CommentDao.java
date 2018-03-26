@@ -19,4 +19,8 @@ import top.catarina.core.persist.entity.Comment;
  * @since 2018-03-08 10:48
  */
 public interface CommentDao extends JpaRepository<Comment,Long>{
+	/**
+	 * 通过用户id进行分页查询查找
+	 */
+	Page<Comment> findByAuthorId(long uid,Pageable pageable);
 }

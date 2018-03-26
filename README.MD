@@ -1,6 +1,6 @@
 # 一起刷高数webapp文档说明
 
-标签（空格分隔）： JavaEE SpringBoot Wexin-Java 前后端分离
+标签： JavaEE SpringBoot Wexin-Java 前后端分离
 
 ---
 
@@ -21,10 +21,11 @@
 <br>
 
  ##开发环境
-- JDK1.8
-- MySQL5.5+
-- Tomcat8.0+
-- Maven3.5+
+- JDK 1.8
+- MySQL 5.5+
+- Tomcat 9.0+
+- Maven 3.5+
+- IDEA 2017.3
 <br>
 
 ##技术选型
@@ -34,35 +35,62 @@
 - 日志管理：SLF4J log-back
 - 页面交互：Vue2.x
 - 视图框架：Spring MVC 4.3
-- 微信SDK : weixin-java-tools 2.9.8 
+- 微信SDK : weixin-java-tools 2.9.8
 <br>
 
 ##项目结构
-'''
-└─spring-boot-gaoshu-plus
-    
-        ├─gaoshu-base 基础模块
-        ├─gaoshu-core 核心模块
-        ├─gaoshu-web  web模块
-        └─gaoshu-wx   微信模块
-'''
+
+spring-boot-gaoshu-plus
+   
+    ├─gaoshu-base 基础通用模块
+    ├─gaoshu-core 核心业务模块
+    ├─gaoshu-web  web接口模块
+    ├─gaoshu-wx   微信业务模块
+    └─gaoshu-admin 项目后台管理模块 //待实现
 <br>
 
  ##本地部署
+    以下说明都为开发环境的配置，
+    若要配置生产环境下的配置需要更改application.yml下spring.active的属性为 pro
  - 通过git下载源码
  - 项目地址 https://github.com/a347807131/spring-boot-gaoshu-plus
- - 创建数据库db_gaoshu_plus，或者更改application中配置文件关于数据库链接的配置
+ - 创建数据库db_gaoshu_plus，或者更改application-dev.yml中配置文件关于数据库链接的配置
  - 执行data/db.sql文件，初始化数据【按需导入表结构及数据】
- - 修改application-dev.yml文件，更新MySQL账号和密码
- - 在项目根目录下，执行mvn clean install
+ - 修改gaoshu-web模块下application-dev.yml文件，更新MySQL账号和密码
  - application.yml中相关配置
     - app：
-        - store: 素材储存目录
+        - store.root: 素材文件储存目录
         - domain: 域名
-    - wechat: 微信开发相关配置
+    - wechat:
+        - mp: 该级为公众号接入相关配置           
+            - appId: 
+            - secret: 
+            - token: 
+            - aesKey: 若不开启aes加密模式，直接不填写该项配置 
+        - pay: 该级为微信支付接入相关配置         
+            - appId: 
+            - mchId: 商户号
+            - mchKey: 商户key
+            - keyPath: 证书存放路径
+ - 在项目根目录下，执行mvn clean install
  <br>
  
+ ##待优化部分
+ - 优化素材管理业务，将素材保存到第三方云服务平台
+ - 实现jpa二级缓存
+ - 实现动态多数据源及利用renrenren-fast框架快速构建后台管理模块
+ - download接口uri采用正则表达式进行匹配
+ - 加入验证码及其关联业务
+ - 实现邮件通知业务
+ <br>
  
+ ##问题
+ - **严重** maven多模块打包失败，如果不能解决，项目将无法部署到生产环境
+ - web接口查询返回的post和comment信息存在大量用户信息沉於问题
+ - 由于美国的软件出口政策，JDK没有支持32位以上的加密包，所以无法在公众号接入下启动加密模式，如有需要，需要进行手动往jre或jdk中添加以上加密包
+
+        按原设计，答题者在选择一个问题进行回答后，该问题将只能为这两人所见，但该设计并未给出如果答案不满意的时候该怎么处理。并且在目前进度下，需要修改和实现大量的业务代码。
+        所以我个人的设计是问题公开，满意回答者由答主选定并发放悬赏。所以用户在前端结题时提交问题id和用户id即可。
  
 
 

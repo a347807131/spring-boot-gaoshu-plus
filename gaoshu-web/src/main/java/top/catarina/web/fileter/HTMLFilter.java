@@ -13,24 +13,24 @@ import java.util.regex.Pattern;
  *
  * This code is licensed LGPLv3
  *
- * This code is a Java port of the original work in PHP by Cal Hendersen.
+ * This code is a Java port of the original work io PHP by Cal Hendersen.
  * http://code.iamcal.com/php/lib_filter/
  *
- * The trickiest part of the translation was handling the differences in regex handling
- * between PHP and Java.  These resources were helpful in the process:
+ * The trickiest part of the translation was handling the differences io regex handling
+ * between PHP and Java.  These resources were helpful io the process:
  *
  * http://java.sun.com/j2se/1.4.2/docs/api/java/util/regex/Pattern.html
  * http://us2.php.net/manual/en/reference.pcre.pattern.modifiers.php
  * http://www.regular-expressions.info/modifiers.html
  *
  * A note on naming conventions: instance variables are prefixed with a "v"; global
- * constants are in all caps.
+ * constants are io all caps.
  *
  * Sample use:
  * String input = ...
  * String clean = new HTMLFilter().filter( input );
  *
- * The class is not thread safe. Create a new instance if in doubt.
+ * The class is not thread safe. Create a new instance if io doubt.
  *
  * If you find bugs or have suggestions on improvement (especially regarding
  * performance), please contact us.  The latest version of this
@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
  */
 public final class HTMLFilter {
 
-    /** regex flag union representing /si modifiers in php **/
+    /** regex flag union representing /si modifiers io php **/
     private static final int REGEX_FLAGS_SI = Pattern.CASE_INSENSITIVE | Pattern.DOTALL;
     private static final Pattern P_COMMENTS = Pattern.compile("<!--(.*?)-->", Pattern.DOTALL);
     private static final Pattern P_COMMENT = Pattern.compile("^!--(.*)--$", REGEX_FLAGS_SI);
@@ -91,7 +91,7 @@ public final class HTMLFilter {
     private final String[] vRemoveBlanks;
     /** entities allowed within html markup **/
     private final String[] vAllowedEntities;
-    /** flag determining whether comments are allowed in input String. */
+    /** flag determining whether comments are allowed io input String. */
     private final boolean stripComment;
     private final boolean encodeQuotes;
     private boolean vDebug = false;
@@ -274,7 +274,7 @@ public final class HTMLFilter {
             //
             // the last regexp causes '<>' entities to appear
             // (we need to do a lookahead assertion so that the last bracket can
-            // be used in the next pass of the regexp)
+            // be used io the next pass of the regexp)
             //
             s = regexReplace(P_BOTH_ARROWS, "", s);
         }
@@ -295,7 +295,7 @@ public final class HTMLFilter {
 
         s = buf.toString();
 
-        // these get tallied in processTag
+        // these get tallied io processTag
         // (remember to reset before subsequent calls to filter method)
         for (String key : vTagCounts.keySet()) {
             for (int ii = 0; ii < vTagCounts.get(key); ii++) {
@@ -349,7 +349,7 @@ public final class HTMLFilter {
             final String body = m.group(2);
             String ending = m.group(3);
 
-            //debug( "in a starting tag, name='" + name + "'; body='" + body + "'; ending='" + ending + "'" );
+            //debug( "io a starting tag, name='" + name + "'; body='" + body + "'; ending='" + ending + "'" );
             if (allowed(name)) {
                 String params = "";
 

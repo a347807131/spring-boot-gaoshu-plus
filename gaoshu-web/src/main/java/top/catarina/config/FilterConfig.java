@@ -2,12 +2,12 @@
  * Copyright 2018 人人开源 http://www.renren.io
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
+ * use this file except io compliance with the License. You may obtain a copy of
  * the License at
  * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
  * <p>
- * Unless required by applicable law or agreed to in writing, software
+ * Unless required by applicable law or agreed to io writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
@@ -21,6 +21,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.DelegatingFilterProxy;
+import top.catarina.web.fileter.CORSFilter;
 import top.catarina.web.fileter.RequestCostFilter;
 import top.catarina.web.fileter.XssFilter;
 
@@ -40,10 +41,14 @@ public class FilterConfig {
     private final
     RequestCostFilter costFilter;
 
+   /* private final
+    CORSFilter corsFilter;*/
+
     @Autowired
-    public FilterConfig(RequestCostFilter costFilter, XssFilter xssFilter) {
+    public FilterConfig(RequestCostFilter costFilter, XssFilter xssFilter/*, CORSFilter corsFilter*/) {
         this.costFilter = costFilter;
         this.xssFilter = xssFilter;
+        //this.corsFilter = corsFilter;
     }
   /*  @Bean
     public FilterRegistrationBean shiroFilterRegistration() {
@@ -54,6 +59,17 @@ public class FilterConfig {
         registration.setEnabled(true);
         registration.setOrder(Integer.MAX_VALUE - 1);
         registration.addUrlPatterns("/*");
+        return registration;
+    }*/
+
+  /*  @Bean
+    public FilterRegistrationBean corsFilterRegistration(){
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setDispatcherTypes(DispatcherType.REQUEST);
+        registration.setFilter(corsFilter);
+        registration.addUrlPatterns("/*");
+        registration.setName("corsFilter");
+        registration.setOrder(Integer.MAX_VALUE-3);
         return registration;
     }*/
 

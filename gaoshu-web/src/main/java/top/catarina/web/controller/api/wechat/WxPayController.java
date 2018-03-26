@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import top.catarina.base.context.AppContext;
 import top.catarina.base.lang.Consts;
 import top.catarina.core.annotation.CurrentUser;
+import top.catarina.core.annotation.Log;
 import top.catarina.core.persist.entity.Order;
 import top.catarina.core.persist.entity.User;
 import top.catarina.core.persist.service.OrderService;
@@ -62,6 +63,7 @@ public class WxPayController extends BaseController {
 	 * @throws WxPayException 微信支付异常
 	 */
 	@ApiOperation("创建微信预支付与本地服务器订单订单的接口")
+	//@Log("用户发起退款")
 	@GetMapping(params = "method=recharge")
 	public Object createOrder(@CurrentUser User user,
 	                          @RequestParam("golds") int golds,
@@ -74,10 +76,10 @@ public class WxPayController extends BaseController {
 		order.setSpbillCreateIp(getIpAddr());
 		order.setBody("金币充值");
 		order.setTradeType(WxPayConstants.TradeType.JSAPI);
-		long outTradeNo = orderService.create(order);
+		long orderId = orderService.create(order);
 
 		WxPayUnifiedOrderRequest orderRequest = new WxPayUnifiedOrderRequest();
-		BeanUtils.copyProperties(orderService.get(outTradeNo), orderRequest);
+		BeanUtils.copyProperties(orderService.get(orderId), orderRequest);
 
 		//设置付快后微信给商家的后台通知
 		orderRequest.setNotifyURL(appContext.getConfig().get("notifyUrl"));
@@ -131,8 +133,12 @@ public class WxPayController extends BaseController {
 		String orderId = result.getOutTradeNo();
 		String tradeNo = result.getTransactionId();
 		String totalFee = WxPayBaseResult.feeToYuan(result.getTotalFee());
+
+		int golds= (int) (result.getTotalFee()*Consts.RETE_TO_GOLD);
+
 		//自己处理订单的业务逻辑，需要判断订单是否已经支付过，否则可能会重复调用
 		orderService.complete(Long.parseLong(result.getOutTradeNo()));
+		userService.changeGolds(getUserId(),golds);
 
 		return "<xml>\n" +
 				"  <return_code><![CDATA[SUCCESS]]></return_code>\n" +

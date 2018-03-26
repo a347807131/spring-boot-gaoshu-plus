@@ -33,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public long create(Order order) {
-		return orderDao.save(order).getOutTradeNo();
+		return orderDao.save(order).getId();
 
 	}
 

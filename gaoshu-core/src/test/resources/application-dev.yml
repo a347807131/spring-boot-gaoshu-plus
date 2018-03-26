@@ -1,7 +1,7 @@
 #项目相关配置
 app:
     #文件储存目录
-    #store.root:
+    store.root: F:\gaoshu
     domain: gaoshu.yiqishuagaoshu.com
     swagger.enable: true
 #微信开发相关配置

@@ -69,7 +69,7 @@ public class ProfileController {
 	 */
 	@ApiOperation(value = "单字段修改接口")
 	@PutMapping(params = "method=single")
-	public R updateSingleAttr( String attr, Object value,
+	public R updateSingleAttr( String attr,@RequestParam Object value,
 	                          @CurrentUser User user) throws IllegalAccessException {
 		long id = user.getId();
 		try {

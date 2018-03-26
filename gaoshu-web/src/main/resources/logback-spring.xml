@@ -8,7 +8,8 @@
     <springProfile name="dev,test">
         <logger name="org.springframework.web" level="INFO"/>
         <logger name="org.springboot.sample" level="INFO"/>
-        <logger name="top.top.catarina" level="DEBUG"/>
+        <logger name="top.catarina" level="DEBUG"/>
+        <logger name="me.chanjar.weixin" level="INFO"/>
     </springProfile>
 
     <!-- 生产环境 -->
@@ -16,6 +17,7 @@
         <logger name="org.springframework.web" level="ERROR"/>
         <logger name="org.springboot.sample" level="ERROR"/>
         <logger name="top.top.catarina" level="ERROR"/>
+        <logger name="me.chanjar.weixin" level="ERROR"/>
     </springProfile>
 
 </configuration>

@@ -77,14 +77,20 @@ public class User extends BaseEntity{
 	//***************以下为项目中的字段****************
 
 	/**手机号*/
-	/*@Column(length = 11)
-	private String mobile;*/
+	@Column(length = 11)
+	private String mobile;
+
+	@Column(length = 36)
+	private String email;
 
 	/**提问数*/
 	private int posts;
 
 	/**金币数*/
 	private int golds;
+
+	/**通过解决他人问题获得的赏金数*/
+	private int earnedGolds;
 
 	/**注册时间*/
 	@Temporal(value = TemporalType.TIMESTAMP)

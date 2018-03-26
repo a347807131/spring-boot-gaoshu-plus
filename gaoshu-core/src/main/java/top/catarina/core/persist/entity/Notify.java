@@ -1,6 +1,7 @@
 package top.catarina.core.persist.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 
@@ -33,7 +34,7 @@ public class Notify implements Serializable{
 	private long postId;
 
 	@Temporal(value = TemporalType.TIMESTAMP)
-	@Generated(GenerationTime.INSERT)
+	@CreationTimestamp
 	private Date created;
 
 	/**状态*/

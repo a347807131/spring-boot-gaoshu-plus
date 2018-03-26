@@ -67,14 +67,6 @@ public class CallbackController {
 			BeanUtils.copyProperties(mpUser,user);
 			userService.add(user);
 		}
-		/* 过时
-		 * 因为hibernate的实际思想，
-		 * 所以sessin(request)中不能直接存方受sessionhibernate管控的实体类
-		 * 解决方案，new 一个不受管控的实体类，并将信息复制
-		 */
-		/*User userInSession = new User();
-		BeanUtils.copyProperties(user,userInSession);*/
-		//保存相关信息到session cookie中
 		login(session, response, user);
 		return user;
 	}

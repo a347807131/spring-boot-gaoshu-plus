@@ -9,6 +9,7 @@
 package top.catarina.web.controller;
 
 import me.chanjar.weixin.mp.api.WxMpMaterialService;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -17,10 +18,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import top.catarina.base.context.AppContext;
+import top.catarina.base.lang.Consts;
 import top.catarina.base.upload.FileRepo;
 import top.catarina.core.persist.entity.Attach;
+import top.catarina.core.persist.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,7 +73,7 @@ public abstract class BaseController {
 	 */
 	protected Pageable wrapPage(Integer pn, Integer maxResults, Sort sort) {
 		if (pn == null)
-			pn = 1;
+			pn = 0;
 
 		if (maxResults == null || maxResults == 0) {
 			maxResults = 10;
@@ -112,11 +116,23 @@ public abstract class BaseController {
 		return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 	}
 
+	protected HttpSession getSession(){
+		return getRequest().getSession();
+	}
+
+	protected User getUser(){
+		return (User) getSession().getAttribute(Consts.USER_ID);
+	}
+
+	protected long getUserId(){
+		return getUser().getId();
+	}
+
 	/**
 	 * 处理上传的素材id，并重微信服务器下载到本地
 	 */
 	protected List<Attach> handleAblums(String[] ablums) throws Exception {
-		if (ablums == null)
+		if (ArrayUtils.isEmpty(ablums))
 			return Collections.emptyList();
 		ArrayList<Attach> attaches = new ArrayList<>();
 		for (String mid : ablums) {
