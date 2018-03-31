@@ -1,4 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
+<<<<<<< Updated upstream
 ### Example user template template
 ### Example user template
 
@@ -31,7 +32,6 @@ application-dev.yml
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-/data/
 gaoshu-base/src/main/resources/
 gaoshu-base/src/test/
 gaoshu-base/target/generated-sources/
@@ -53,3 +53,10 @@ gaoshu-wx/src/main/resources/
 gaoshu-wx/src/test/resources/
 gaoshu-wx/target/generated-sources/
 gaoshu-wx/target/generated-test-sources/
+=======
+
+>>>>>>> Stashed changes
+gaoshu-admin/src/main/resources/
+gaoshu-admin/src/test/
+gaoshu-base/target/classes/
+gaoshu-web/target/classes/application-prod.yml

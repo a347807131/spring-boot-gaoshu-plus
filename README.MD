@@ -42,11 +42,33 @@
 
 spring-boot-gaoshu-plus
    
-    ├─gaoshu-base 基础通用模块
-    ├─gaoshu-core 核心业务模块
-    ├─gaoshu-web  web接口模块
-    ├─gaoshu-wx   微信业务模块
-    └─gaoshu-admin 项目后台管理模块 //待实现
+    ├─data
+    │  └─renren renren-security框架生成的代码 用于搭建后台
+    │
+    ├─gaoshu-admin  后台模块，待实现
+    │
+    ├─gaoshu-base  基础通用模块
+    │  ├─context 上下文
+    │  ├─exception
+    │  ├─lang   常量及枚举类
+    │  ├─upload 素材管理实现
+    │  └─utils  工具类
+    │
+    ├─gaoshu-core    核心业务模块
+    │  ├─annotation  自定义注解
+    │  ├─data 表单
+    │  ├─persist  持久层
+    │  └─validator  暂时未用到
+    │
+    ├─gaoshu-web    web接口模块
+    │  │  ├─config  配置类
+    │  │  └─web  web层组件
+    │  └─resources  全局配置文件
+    │
+    └─gaoshu-wx    微信接入模块
+       └─config  微信sdk配置类
+         ├─builder
+         └─handler  微信公众号消息处理器
 <br>
 
  ##本地部署
@@ -79,7 +101,7 @@ spring-boot-gaoshu-plus
  - 优化素材管理业务，将素材保存到第三方云服务平台
  - 实现jpa二级缓存
  - 实现动态多数据源及利用renrenren-fast框架快速构建后台管理模块
- - download接口uri采用正则表达式进行匹配
+ - download接口uri匹配规则采用正则表达式进行匹配
  - 加入验证码及其关联业务
  - 实现邮件通知业务
  <br>
@@ -92,6 +114,3 @@ spring-boot-gaoshu-plus
         按原设计，答题者在选择一个问题进行回答后，该问题将只能为这两人所见，但该设计并未给出如果答案不满意的时候该怎么处理。并且在目前进度下，需要修改和实现大量的业务代码。
         所以我个人的设计是问题公开，满意回答者由答主选定并发放悬赏。所以用户在前端结题时提交问题id和用户id即可。
  
-
-
-
