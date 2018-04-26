@@ -2,6 +2,7 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/data/college.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/data/db_gaoshu_plus.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/data/renren/mysql.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/data/renren/tb_user.sql" dialect="MySQL" />
   </component>

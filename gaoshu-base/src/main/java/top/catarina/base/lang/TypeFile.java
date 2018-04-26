@@ -37,9 +37,9 @@ public enum TypeFile {
 	MID("4D546864");
 
 
-	private String value = "";
+	private String value;
 
-	private TypeFile(String value) {
+	TypeFile(String value) {
 		this.value = value;
 	}
 

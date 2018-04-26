@@ -59,4 +59,4 @@ gaoshu-wx/target/generated-test-sources/
 gaoshu-admin/src/main/resources/
 gaoshu-admin/src/test/
 gaoshu-base/target/classes/
-gaoshu-web/target/classes/application-prod.yml
+#gaoshu-web/target/classes/application-prod.yml

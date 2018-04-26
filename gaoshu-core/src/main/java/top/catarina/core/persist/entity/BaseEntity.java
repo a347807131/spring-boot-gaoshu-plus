@@ -23,6 +23,6 @@ import java.io.Serializable;
  * @since 2018-03-10 23:01
  */
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
-class BaseEntity implements Serializable {
+abstract class  BaseEntity implements Serializable{
 
 }
